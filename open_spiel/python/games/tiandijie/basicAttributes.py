@@ -1,6 +1,7 @@
 import enum
-from open_spiel.python.games.tiandijie.types import Attributes
+from typing import Tuple
 
+from open_spiel.python.games.tiandijie.types import Attributes
 
 class JishenProfessions(enum.Enum):
     SWORDSMAN_WITH_MAGIC = (867, 0, 335, 268, 202, 0)  # LIFE, ATTACK, DEFENSE, MAGIC_ATTACK, MAGIC_DEFENSE, LUCK
@@ -59,35 +60,30 @@ class XingpanProfessions(enum.Enum):
 
 
 class HuazhenAmplifier(enum.Enum):
-    SWORDSMAN = (4, 2, 2, 0, 2, 2)
-    SWORDSMAN_WITH_MAGIC = (4, 0, 2, 2, 2, 2)
-    PRIEST = (4, 0, 2, 2, 2, 2)
-    ARCHER = (4, 2, 2, 0, 2, 2)
-    RIDER_HIGH_DAMAGE = (4, 2, 2, 0, 2, 2)
-    RIDER_BALANCE = (4, 2, 2, 0, 2, 2)
-    GUARD_STRIKE = (4, 2, 2, 0, 2, 2)
-    GUARD_DEFENSE = (4, 2, 2, 0, 2, 2)
-    SORCERER_DAMAGE = (4, 0, 2, 2, 2, 2)
-    SORCERER_ASSIST = (4, 0, 2, 2, 2, 2)
-    WARRIOR = (4, 0, 2, 2, 2, 2)
+    SWORDSMAN = (0, 4, 2, 2, 0, 2, 2)
+    SWORDSMAN_WITH_MAGIC = (1, 4, 0, 2, 2, 2, 2)
+    PRIEST = (2, 4, 0, 2, 2, 2, 2)
+    ARCHER = (3, 4, 2, 2, 0, 2, 2)
+    RIDER_HIGH_DAMAGE = (4, 4, 2, 2, 0, 2, 2)
+    RIDER_BALANCE = (5, 4, 2, 2, 0, 2, 2)
+    GUARD_STRIKE = (6, 4, 2, 2, 0, 2, 2)
+    GUARD_DEFENSE = (7, 4, 2, 2, 0, 2, 2)
+    SORCERER_DAMAGE = (8, 4, 0, 2, 2, 2, 2)
+    SORCERER_ASSIST = (9, 4, 0, 2, 2, 2, 2)
+    WARRIOR = (10, 4, 0, 2, 2, 2, 2)
 
 
-def calculateMaxAddedValue(wuneiProfession, jishenProfession, shenbinProfession,
-                           huazhenProfession, xingpan_profession):
-    # Ensure each profession is a tuple of 6 numbers
-    print('profession is', [jishenProfession, shenbinProfession, huazhenProfession, wuneiProfession])
-    # if not all(len(profession) == 6 for profession in
-    #            [jishenProfession, shenbinProfession, huazhenProfession, wuneiProfession]):
-    #     raise ValueError("Each profession must be a tuple of 6 numbers")
+class XingpanAmplifier(enum.Enum):
+    SWORDSMAN = (0, 12, 12, 20, 10, 20, 0)
+    SWORDSMAN_WITH_MAGIC = (1, 12, 10, 20, 12, 20, 0)
+    PRIEST = (2, 12, 10, 20, 12, 20, 0)
+    ARCHER = (3, 12, 12, 20, 10, 20, 0)
+    RIDER_HIGH_DAMAGE = (4, 12, 12, 20, 10, 20, 0)
+    RIDER_BALANCE = (5, 12, 12, 20, 10, 20, 0)
+    GUARD_STRIKE = (6, 12, 12, 20, 10, 20, 0)
+    GUARD_DEFENSE = (7, 12, 12, 20, 10, 20, 0)
+    SORCERER_DAMAGE = (8, 12, 10, 20, 12, 20, 0)
+    SORCERER_ASSIST = (9, 12, 10, 20, 12, 20, 0)
+    WARRIOR = (10, 12, 10, 20, 12, 20, 0)
 
-    # Applying the formula to each corresponding element
-    calculated_values = tuple(
-        jishenProfession.value[i] +
-        shenbinProfession.value[i] * (69 / 10 + 1) +
-        huazhenProfession.value[i] +
-        sum(wuneiProfession.value[i]) +
-        xingpan_profession.value[i]
-        for i in range(6)
-    )
 
-    return Attributes(*calculated_values)
