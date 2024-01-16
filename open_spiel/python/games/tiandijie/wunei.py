@@ -88,6 +88,7 @@ MOBAO_LUCK = (3.5, 4.9, 7, 7.7, 9.1, 10.5, 12.6, 14.7)
 
 class WuneiProfessions(enum.Enum):
     SWORDSMAN = (
+        0,
         SWORDSMAN_LIFE,
         SWORDSMAN_ATTACK,
         SWORDSMAN_DEFENSE,
@@ -96,6 +97,7 @@ class WuneiProfessions(enum.Enum):
         SWORDSMAN_LUCK
     )
     SWORDSMAN_WITH_MAGIC = (
+        1,
         SWORDSMAN_WITH_MAGIC_LIFE,
         SWORDSMAN_WITH_MAGIC_ATTACK,
         SWORDSMAN_WITH_MAGIC_DEFENSE,
@@ -104,6 +106,7 @@ class WuneiProfessions(enum.Enum):
         SWORDSMAN_WITH_MAGIC_LUCK
     )
     PRIEST = (
+        2,
         PRIEST_LIFE,
         PRIEST_ATTACK,
         PRIEST_DEFENSE,
@@ -112,6 +115,7 @@ class WuneiProfessions(enum.Enum):
         PRIEST_LUCK
     )
     ARCHER = (
+        3,
         ARCHER_LIFE,
         ARCHER_ATTACK,
         ARCHER_DEFENSE,
@@ -119,7 +123,26 @@ class WuneiProfessions(enum.Enum):
         ARCHER_MAGIC_DEFENSE,
         ARCHER_LUCK
     )
+    RIDER_HIGH_DAMAGE = (
+        4,
+        RIDER_HIGH_DAMAGE_LIFE,
+        RIDER_HIGH_DAMAGE_ATTACK,
+        RIDER_HIGH_DAMAGE_DEFENSE,
+        RIDER_HIGH_DAMAGE_MAGIC_ATTACK,
+        RIDER_HIGH_DAMAGE_MAGIC_DEFENSE,
+        RIDER_HIGH_DAMAGE_LUCK
+    )
+    RIDER_BALANCE = (
+        5,
+        RIDER_BALANCE_LIFE,
+        RIDER_BALANCE_ATTACK,
+        RIDER_BALANCE_DEFENSE,
+        RIDER_BALANCE_MAGIC_ATTACK,
+        RIDER_BALANCE_MAGIC_DEFENSE,
+        RIDER_BALANCE_LUCK
+    )
     GUARD_PROTECT = (
+        6,
         GUARD_PROTECT_LIFE,
         GUARD_PROTECT_ATTACK,
         GUARD_PROTECT_DEFENSE,
@@ -128,6 +151,7 @@ class WuneiProfessions(enum.Enum):
         GUARD_PROTECT_LUCK
     )
     GUARD_STRIKE = (
+        7,
         GUARD_STRIKE_LIFE,
         GUARD_STRIKE_ATTACK,
         GUARD_STRIKE_DEFENSE,
@@ -136,6 +160,7 @@ class WuneiProfessions(enum.Enum):
         GUARD_STRIKE_LUCK
     )
     SORCERER_DAMAGE = (
+        8,
         SORCERER_DAMAGE_LIFE,
         SORCERER_DAMAGE_ATTACK,
         SORCERER_DAMAGE_DEFENSE,
@@ -144,6 +169,7 @@ class WuneiProfessions(enum.Enum):
         SORCERER_DAMAGE_LUCK
     )
     SORCERER_ASSIST = (
+        9,
         SORCERER_ASSIST_LIFE,
         SORCERER_ASSIST_ATTACK,
         SORCERER_ASSIST_DEFENSE,
@@ -152,6 +178,7 @@ class WuneiProfessions(enum.Enum):
         SORCERER_ASSIST_LUCK
     )
     WARRIOR = (
+        10,
         WARRIOR_LIFE,
         WARRIOR_ATTACK,
         WARRIOR_DEFENSE,
@@ -160,6 +187,7 @@ class WuneiProfessions(enum.Enum):
         WARRIOR_LUCK
     )
     JIANXIE = (
+        11,
         JIANXIE_LIFE,
         JIANXIE_ATTACK,
         JIANXIE_DEFENSE,
@@ -168,6 +196,7 @@ class WuneiProfessions(enum.Enum):
         JIANXIE_LUCK
     )
     MOBAO = (
+        12,
         MOBAO_LIFE,
         MOBAO_ATTACK,
         MOBAO_DEFENSE,
