@@ -50,6 +50,7 @@ def get_attacker_attack_value(attacker_instance, is_magic, context):
 def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Context, skill: Skill):
     accumulated_talents_damage_modifier = accumulate_damage_modifier(context.heroes.talents, is_magic)
     accumulated_skill_damage_modifier = skill.damage_multiplier
+    accumulated_passive_damage_modifier = accumulate_damage_modifier(attacker_instance.passives, is_magic)
     accumulated_buffs_damage_modifier = accumulate_damage_modifier(attacker_instance.buffs, is_magic)
     accumulated_equipment_damage_modifier = accumulate_damage_modifier(attacker_instance.equipments, is_magic)
     accumulated_stones_percentage_damage_modifier = accumulate_damage_modifier(attacker_instance.stones.percentage,
@@ -64,6 +65,7 @@ def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Contex
             + accumulated_buffs_damage_modifier
             + accumulated_equipment_damage_modifier
             + accumulated_stones_effect_damage_modifier
+            + accumulated_passive_damage_modifier
             + formation_damage_modifier) / 100
 
     # B-type damage increase (Additive)
@@ -74,7 +76,7 @@ def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Contex
 def get_damage_reduction_modifier(defense_instance: Hero, is_magic: bool, context: Context):
     accumulated_talents_damage_reduction_modifier = accumulate_damage_reduction_modifier(context.heroes.talents,
                                                                                          is_magic)
-    accumulated_skill_damage_reduction_modifier = 10
+    accumulated_passives_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.passives, is_magic)
     accumulated_buffs_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.buffs, is_magic)
     accumulated_equipment_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.equipments,
                                                                                            is_magic)
@@ -87,7 +89,7 @@ def get_damage_reduction_modifier(defense_instance: Hero, is_magic: bool, contex
     # A-type damage increase (Additive)
     a_type_damage_reduction = 1 - (
             accumulated_talents_damage_reduction_modifier
-            + accumulated_skill_damage_reduction_modifier
+            + accumulated_passives_damage_reduction_modifier
             + accumulated_buffs_damage_reduction_modifier
             + accumulated_equipment_damage_reduction_modifier
             + accumulated_stones_effect_damage_reduction_modifier
@@ -154,7 +156,8 @@ def get_critical_damage_reduction_modifier(defender_instance, context):
     accumulated_talents_modifier = accumulate_attribute(context.talents, 'critical_damage_reduction_percentage')
     formation_modifier = context.formation.critical
     return 1 - (
-                accumulated_equipments_modifier - accumulated_buffs_modifier - accumulated_stones_effect_modifier - accumulated_talents_modifier - formation_modifier) / 100
+                accumulated_equipments_modifier - accumulated_buffs_modifier - accumulated_stones_effect_modifier
+                - accumulated_talents_modifier - formation_modifier) / 100
 
 
 def calculate_damage(attacker_instance: Hero, defender_instance: Hero, is_magic: bool, context, skill: Skill):
@@ -164,8 +167,8 @@ def calculate_damage(attacker_instance: Hero, defender_instance: Hero, is_magic:
 
     # Calculating attack-defense difference
     attack_defense_difference = (
-            get_attacker_attack_value(attacker_instance, is_magic) * attacker_elemental_multiplier
-            - get_defender_defense(attacker_instance, defender_instance, is_magic) * defender_elemental_multiplier)
+            get_attacker_attack_value(attacker_instance, is_magic, context) * attacker_elemental_multiplier
+            - get_defender_defense(attacker_instance, defender_instance, is_magic, context) * defender_elemental_multiplier)
 
     # Calculating base damage
     actual_damage = (attack_defense_difference

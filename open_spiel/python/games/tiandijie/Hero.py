@@ -14,6 +14,7 @@ class Hero:
         self.pinyin = "XUANYU"
         self.rarity = "绝"
         self.buffs = []
+        self.passives = []
         self.stones = Stone()
         self.equipments = []
         self.gender = Gender.FEMALE
