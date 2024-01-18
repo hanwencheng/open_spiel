@@ -1,18 +1,16 @@
-import enum
-from typing import Tuple
-
 from open_spiel.python.games.Element import Elements
 from open_spiel.python.games.tiandijie import wunei, basicAttributes
 from open_spiel.python.games.tiandijie.HeroBasics import Gender, Professions
-from open_spiel.python.games.tiandijie.Stone import Stone
+from open_spiel.python.games.tiandijie.types.Stone import Stone
 from open_spiel.python.games.tiandijie.types import Attributes
 
 
 class Hero:
-    def __init__(self, basicInfo, initial_attributes, growth_coefficients, skills):
+    def __init__(self, basicInfo, initial_attributes, growth_coefficients, skills, playerId):
         self.name = "玄羽"
         self.pinyin = "XUANYU"
         self.rarity = "绝"
+        self.playerId = 0
         self.buffs = []
         self.passives = []
         self.stones = Stone()

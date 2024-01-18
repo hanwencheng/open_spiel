@@ -1,6 +1,6 @@
 import enum
 
-from open_spiel.python.games.tiandijie.Modifier import Modifier
+from open_spiel.python.games.tiandijie.types.Modifier import Modifier
 
 
 class BuffType(enum.Enum):

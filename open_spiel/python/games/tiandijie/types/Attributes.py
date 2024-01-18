@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from open_spiel.python.games.tiandijie.basicAttributes import JishenProfessions, ShenbinProfessions, HuazhenProfessions, \
+from open_spiel.python.games.tiandijie.types.BasicAttributes import JishenProfessions, ShenbinProfessions, HuazhenProfessions, \
     XingpanProfessions, HuazhenAmplifier, XingpanAmplifier
 from open_spiel.python.games.tiandijie.wunei import WuneiProfessions
 

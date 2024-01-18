@@ -1,11 +1,11 @@
 from random import random
 
 from open_spiel.python.games.Element import get_elemental_multiplier
-from open_spiel.python.games.tiandijie.Context import Context
-from open_spiel.python.games.tiandijie.Hero import Hero
-from open_spiel.python.games.tiandijie.Modifier import accumulate_defense_modifier, accumulate_attack_modifier, \
+from open_spiel.python.games.tiandijie.types.Context import Context
+from open_spiel.python.games.tiandijie.types.Hero import Hero
+from open_spiel.python.games.tiandijie.types.Modifier import accumulate_defense_modifier, accumulate_attack_modifier, \
     accumulate_damage_modifier, accumulate_damage_reduction_modifier, accumulate_attribute
-from open_spiel.python.games.tiandijie.Skill import Skill
+from open_spiel.python.games.tiandijie.types.Skill import Skill
 
 CRIT_MULTIPLIER = 1.3
 LIEXING_DAMAGE_REDUCTION = 4
