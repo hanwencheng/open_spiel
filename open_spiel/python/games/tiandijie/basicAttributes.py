@@ -1,5 +1,17 @@
 import enum
 
+class MovesRanges(enum.Enum):
+    SWORDSMAN = (0, 3, 1)
+    SWORDSMAN_WITH_MAGIC = (1, 3, 1)  # LIFE, ATTACK, DEFENSE, MAGIC_ATTACK, MAGIC_DEFENSE, LUCK
+    PRIEST = (2, 3, 2)
+    ARCHER = (3, 3, 2)
+    RIDER_HIGH_DAMAGE = (4, 5, 1)
+    RIDER_BALANCE = (5, 5, 1)
+    GUARD_STRIKE = (6, 3, 1)
+    GUARD_DEFENSE = (7, 3, 1)
+    SORCERER_DAMAGE = (8, 3, 2)
+    SORCERER_ASSIST = (9, 3, 2)
+    WARRIOR = (10, 4, 1)
 
 class JishenProfessions(enum.Enum):
     SWORDSMAN = (0, 867, 268, 335, 0, 202, 0)

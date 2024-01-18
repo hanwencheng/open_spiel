@@ -1,39 +1,21 @@
 import enum
 from typing import Tuple
 
+from open_spiel.python.games.Element import Elements
 from open_spiel.python.games.tiandijie import wunei, basicAttributes
+from open_spiel.python.games.tiandijie.HeroBasics import Gender, Professions
+from open_spiel.python.games.tiandijie.Stone import Stone
 from open_spiel.python.games.tiandijie.types import Attributes
 
-
-class Elements(enum.IntEnum):
-    FIRE = 1  # 火
-    WATER = 2  # 冰
-    THUNDER = 3  # 雷
-    LIGHT = 4  # 光
-    DARK = 5  # 暗
-    ETHEREAL = 6  # 幽
-
-
-class Gender(enum.IntEnum):
-    MALE = 1
-    FEMALE = 2
-
-
-class Professions(enum.Enum):
-    # ID，RANGE, MOVE
-    GUARD = (1, 1, 3)
-    SWORDSMAN = (2, 1, 3)
-    SORCERER = (3, 2, 3)
-    PRIEST = (4, 2, 3)
-    ARCHER = (5, 2, 3)
-    RIDER = (6, 1, 5)
-    WARRIOR = (7, 1, 4)
 
 class Hero:
     def __init__(self, basicInfo, initial_attributes, growth_coefficients, skills):
         self.name = "玄羽"
         self.pinyin = "XUANYU"
         self.rarity = "绝"
+        self.buffs = []
+        self.stones = Stone()
+        self.equipments = []
         self.gender = Gender.FEMALE
         if self.gender not in Gender:
             raise ValueError("性别必须是‘男’或‘女’")
