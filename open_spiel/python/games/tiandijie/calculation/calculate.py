@@ -1,23 +1,18 @@
-from random import random
+from open_spiel.python.games.tiandijie.types import Hero, Context, Skill
+from open_spiel.python.games.tiandijie.types.Modifier import accumulate_attribute, accumulate_defense_modifier, \
+    accumulate_attack_modifier, accumulate_damage_modifier, accumulate_damage_reduction_modifier
 
-from open_spiel.python.games.Element import get_elemental_multiplier
-from open_spiel.python.games.tiandijie.types.Context import Context
-from open_spiel.python.games.tiandijie.types.Hero import Hero
-from open_spiel.python.games.tiandijie.types.Modifier import accumulate_defense_modifier, accumulate_attack_modifier, \
-    accumulate_damage_modifier, accumulate_damage_reduction_modifier, accumulate_attribute
-from open_spiel.python.games.tiandijie.types.Skill import Skill
-
-CRIT_MULTIPLIER = 1.3
 LIEXING_DAMAGE_REDUCTION = 4
 LIEXING_DAMAGE_INCREASE = 4
 
+
+# TODO Shenbin calculation is not included
 
 def get_attacker_penetration(attacker_instance, is_magic: bool):
     return 10
 
 
-def get_defender_defense(attacker_instance, defender_instance, is_magic, context):
-    penetration = get_attacker_penetration(attacker_instance, is_magic)
+def get_defense(defender_instance: Hero, is_magic: bool, context: Context) -> float:
     # calculate buffs
     accumulated_buffs_modifier = accumulate_defense_modifier(defender_instance.buffs, is_magic)
     accumulated_stones_value_modifier = accumulate_defense_modifier(defender_instance.stones.value, is_magic)
@@ -28,11 +23,19 @@ def get_defender_defense(attacker_instance, defender_instance, is_magic, context
 
     defense_attribute = defender_instance.current_attributes.defense if is_magic else defender_instance.current_attributes.magic_defense
     basic_defense = defense_attribute * (1 + accumulated_stones_percentage_modifier) + accumulated_stones_value_modifier
-    return basic_defense * ((
-                                    1 + accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier) - penetration)
+    return basic_defense * (
+            1 + accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier)
 
 
-def get_attacker_attack_value(attacker_instance, is_magic, context):
+def get_defense_with_penetration(attacker_instance: Hero, defender_instance: Hero, is_magic: bool,
+                                 context: Context) -> float:
+    penetration = get_attacker_penetration(attacker_instance, is_magic)
+    # calculate buffs
+    basic_defense = get_defense(defender_instance, is_magic, context)
+    return basic_defense * (1 - penetration)
+
+
+def get_attack(attacker_instance: Hero, is_magic: bool, context: Context) -> float:
     # calculate buffs
     accumulated_buffs_modifier = accumulate_attack_modifier(attacker_instance.buffs, is_magic)
     accumulated_stones_value_modifier = accumulate_attack_modifier(attacker_instance.stones.value, is_magic)
@@ -47,7 +50,7 @@ def get_attacker_attack_value(attacker_instance, is_magic, context):
             1 + accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier)
 
 
-def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Context, skill: Skill):
+def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Context, skill: Skill) -> float:
     accumulated_talents_damage_modifier = accumulate_damage_modifier(context.heroes.talents, is_magic)
     accumulated_skill_damage_modifier = skill.damage_multiplier
     accumulated_passive_damage_modifier = accumulate_damage_modifier(attacker_instance.passives, is_magic)
@@ -73,10 +76,11 @@ def get_damage_modifier(attacker_instance: Hero, is_magic: bool, context: Contex
     return a_type_damage_increase * b_type_damage_increase
 
 
-def get_damage_reduction_modifier(defense_instance: Hero, is_magic: bool, context: Context):
+def get_damage_reduction_modifier(defense_instance: Hero, is_magic: bool, context: Context) -> float:
     accumulated_talents_damage_reduction_modifier = accumulate_damage_reduction_modifier(context.heroes.talents,
                                                                                          is_magic)
-    accumulated_passives_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.passives, is_magic)
+    accumulated_passives_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.passives,
+                                                                                          is_magic)
     accumulated_buffs_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.buffs, is_magic)
     accumulated_equipment_damage_reduction_modifier = accumulate_damage_reduction_modifier(defense_instance.equipments,
                                                                                            is_magic)
@@ -97,11 +101,11 @@ def get_damage_reduction_modifier(defense_instance: Hero, is_magic: bool, contex
 
     # B-type damage increase (Additive)
     b_type_damage_reduction = 1 - (
-                LIEXING_DAMAGE_REDUCTION + accumulated_stones_damage_reduction_percentage_modifier) / 100
+            LIEXING_DAMAGE_REDUCTION + accumulated_stones_damage_reduction_percentage_modifier) / 100
     return a_type_damage_reduction * b_type_damage_reduction
 
 
-def get_attacker_hit_probability(attacker_instance, context):
+def get_attacker_hit_probability(attacker_instance: Hero, context: Context) -> float:
     # calculate buffs
     luck_accumulated_buffs_modifier = accumulate_attribute(attacker_instance.buffs, 'luck')
     luck_stones_effect_modifier = accumulate_attribute(attacker_instance.stones.effect, 'luck')
@@ -116,12 +120,12 @@ def get_attacker_hit_probability(attacker_instance, context):
 
     luck_attribute = attacker_instance.current_attributes.luck
     total_luck = luck_attribute * (
-                1 + luck_accumulated_buffs_modifier + luck_stones_effect_modifier + luck_talents_modifier)
+            1 + luck_accumulated_buffs_modifier + luck_stones_effect_modifier + luck_talents_modifier)
     total_critical = total_luck / 10 + critical_equipments_modifier + critical_buffs_modifier + critical_stones_effect_modifier + critical_talents_modifier + critical_formation_modifier + critical_stones_percentage_modifier
     return total_critical / 100
 
 
-def get_defender_hit_resistance(defender_instance, context):
+def get_defender_hit_resistance(defender_instance: Hero, context: Context) -> float:
     # Calculate buffs
     accumulated_buffs_modifier = accumulate_attribute(defender_instance.buffs, 'critical_reduction')
     accumulated_stones_effect_modifier = accumulate_attribute(defender_instance.stones.effect, 'critical_reduction')
@@ -132,10 +136,10 @@ def get_defender_hit_resistance(defender_instance, context):
     formation_modifier = context.formation.critical_reduction
 
     return 1 - (
-                accumulated_buffs_modifier - accumulated_stones_effect_modifier - accumulated_talents_modifier - accumulated_equipments_modifier - formation_modifier - critical_stones_percentage_modifier) / 100
+            accumulated_buffs_modifier - accumulated_stones_effect_modifier - accumulated_talents_modifier - accumulated_equipments_modifier - formation_modifier - critical_stones_percentage_modifier) / 100
 
 
-def get_critical_damage_modifier(attacker_instance, context):
+def get_critical_damage_modifier(attacker_instance: Hero, context: Context) -> float:
     accumulated_equipments_modifier = accumulate_attribute(attacker_instance.equipments, 'critical_damage_percentage')
     accumulated_buffs_modifier = accumulate_attribute(attacker_instance.buffs, 'critical_damage_percentage')
     accumulated_stones_effect_modifier = accumulate_attribute(attacker_instance.stones.effect,
@@ -144,10 +148,10 @@ def get_critical_damage_modifier(attacker_instance, context):
     formation_modifier = context.formation.critical
 
     return 1 + (
-                accumulated_equipments_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_talents_modifier + formation_modifier) / 100
+            accumulated_equipments_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_talents_modifier + formation_modifier) / 100
 
 
-def get_critical_damage_reduction_modifier(defender_instance, context):
+def get_critical_damage_reduction_modifier(defender_instance: Hero, context: Context) -> float:
     accumulated_equipments_modifier = accumulate_attribute(defender_instance.equipments,
                                                            'critical_damage_reduction_percentage')
     accumulated_buffs_modifier = accumulate_attribute(defender_instance.buffs, 'critical_damage_reduction_percentage')
@@ -156,36 +160,17 @@ def get_critical_damage_reduction_modifier(defender_instance, context):
     accumulated_talents_modifier = accumulate_attribute(context.talents, 'critical_damage_reduction_percentage')
     formation_modifier = context.formation.critical
     return 1 - (
-                accumulated_equipments_modifier - accumulated_buffs_modifier - accumulated_stones_effect_modifier
-                - accumulated_talents_modifier - formation_modifier) / 100
+            accumulated_equipments_modifier - accumulated_buffs_modifier - accumulated_stones_effect_modifier
+            - accumulated_talents_modifier - formation_modifier) / 100
 
 
-def calculate_damage(attacker_instance: Hero, defender_instance: Hero, is_magic: bool, context, skill: Skill):
-    attacker_elemental_multiplier = get_elemental_multiplier(attacker_instance.element, defender_instance.element, True)
-    defender_elemental_multiplier = get_elemental_multiplier(attacker_instance.element, defender_instance.element,
-                                                             False)
-
-    # Calculating attack-defense difference
-    attack_defense_difference = (
-            get_attacker_attack_value(attacker_instance, is_magic, context) * attacker_elemental_multiplier
-            - get_defender_defense(attacker_instance, defender_instance, is_magic, context) * defender_elemental_multiplier)
-
-    # Calculating base damage
-    actual_damage = (attack_defense_difference
-                     * skill.damage_multiplier
-                     * get_damage_modifier(attacker_instance, is_magic, context, skill)
-                     * get_damage_reduction_modifier(defender_instance, is_magic, context))
-
-    critical_probability = (get_attacker_hit_probability(attacker_instance, context)
-                            - get_defender_hit_resistance(defender_instance, context))
-
-    critical_damage_multiplier = (CRIT_MULTIPLIER
-                                  * get_critical_damage_modifier(attacker_instance, context)
-                                  * get_critical_damage_reduction_modifier(defender_instance, context))
-
-    if random() < critical_probability:
-        # Critical hit occurs
-        return actual_damage * critical_damage_multiplier
-    else:
-        # No critical hit
-        return actual_damage
+def get_fixed_damage_reduction_modifier(defender_instance: Hero, context: Context) -> float:
+    accumulated_equipments_modifier = accumulate_attribute(defender_instance.equipments,
+                                                           'fixed_damage_reduction_percentage')
+    accumulated_buffs_modifier = accumulate_attribute(defender_instance.buffs, 'fixed_damage_reduction_percentage')
+    accumulated_talents_modifier = accumulate_attribute(context.talents, 'fixed_damage_reduction_percentage')
+    accumulated_passives_damage_reduction_modifier = accumulate_attribute(defender_instance.passives,
+                                                                          'fixed_damage_reduction_percentage')
+    return 1 - (
+            accumulated_equipments_modifier - accumulated_buffs_modifier - accumulated_talents_modifier
+            - accumulated_passives_damage_reduction_modifier) / 100

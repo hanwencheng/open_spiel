@@ -1,3 +1,6 @@
+import enum
+
+
 class Elements(enum.IntEnum):
     FIRE = 1  # 火
     WATER = 2  # 冰
