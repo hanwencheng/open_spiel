@@ -44,7 +44,9 @@ class Modifier:
         self.attack_range: int = 0
 
         self.absolute_defense_range: int = 1
-        self.passives_on: bool = True
+        self.passives_disabled: bool = False
+        self.action_disabled: bool = False
+        self.no_counterattack: bool = False
 
         # Update attributes from dictionary
         for key, value in modifier_dict.items():

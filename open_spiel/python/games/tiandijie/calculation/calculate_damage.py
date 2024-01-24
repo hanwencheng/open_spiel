@@ -3,7 +3,8 @@ from random import random
 from open_spiel.python.games.Element import get_elemental_multiplier
 from open_spiel.python.games.tiandijie.calculation.calculate import get_attack, get_defense_with_penetration, \
     get_damage_modifier, get_damage_reduction_modifier, get_attacker_hit_probability, get_defender_hit_resistance, \
-    get_critical_damage_modifier, get_critical_damage_reduction_modifier, get_fixed_damage_reduction_modifier
+    get_critical_damage_modifier, get_critical_damage_reduction_modifier, get_fixed_damage_reduction_modifier, \
+    get_defense
 from open_spiel.python.games.tiandijie.types import Context
 from open_spiel.python.games.tiandijie.types.Hero import Hero
 
@@ -50,3 +51,15 @@ def calculate_damage(attacker_instance: Hero, defender_instance: Hero, context):
 def calculate_fix_damage(damage, defender_instance: Hero, context: Context):
     defender_fix_damage_reduction = get_fixed_damage_reduction_modifier(defender_instance, context)
     defender_instance.take_harm(damage * defender_fix_damage_reduction)
+
+
+def calculate_magic_damage(damage: float, defender_instance: Hero, context: Context):
+    actual_damage = (damage
+                     * get_damage_reduction_modifier(defender_instance, True, context))
+    defender_instance.take_harm(actual_damage)
+
+
+def calculate_physical_damage(damage: float, defender_instance: Hero, context: Context):
+    actual_damage = (damage
+                     * get_damage_reduction_modifier(defender_instance, False, context))
+    defender_instance.take_harm(actual_damage)

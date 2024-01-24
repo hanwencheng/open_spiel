@@ -12,6 +12,20 @@ def get_attacker_penetration(attacker_instance, is_magic: bool):
     return 10
 
 
+def get_max_life(hero_instance: Hero, context: Context) -> float:
+    accumulated_buffs_modifier = accumulate_attribute(hero_instance.buffs, 'life_percentage')
+    accumulated_stones_value_modifier = accumulate_attribute(hero_instance.stones.value, 'life')
+    accumulated_stones_effect_modifier = accumulate_attribute(hero_instance.stones.effect, 'life_percentage')
+    accumulated_stones_percentage_modifier = accumulate_attribute(hero_instance.stones.percentage, 'life_percentage')
+    accumulated_talents_modifier = accumulate_attribute(context.heroes.talents, 'life_percentage')
+    accumulated_equipments_modifier = accumulate_attribute(hero_instance.equipments, 'life')
+
+    life_attribute = hero_instance.current_attributes.life
+    basic_life = life_attribute * (1 + accumulated_stones_percentage_modifier) + accumulated_stones_value_modifier
+    return basic_life * (
+            1 + accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier)
+
+
 def get_defense(defender_instance: Hero, is_magic: bool, context: Context) -> float:
     # calculate buffs
     accumulated_buffs_modifier = accumulate_defense_modifier(defender_instance.buffs, is_magic)
