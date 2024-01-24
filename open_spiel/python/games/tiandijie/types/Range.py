@@ -21,22 +21,22 @@ def calculate_direction_area(actor_point: Position, current_action_point: Positi
     if actor_point[0] - current_action_point[0] and actor_point[1] == current_action_point[1]:
         for i in range(length):
             for j in range(width):
-                area_map.append([actor_point[0] + i + 1, actor_point[1] - floor(width / 2) + j])
+                area_map.append((actor_point[0] + i + 1, actor_point[1] - floor(width / 2) + j))
     # in left direction
     elif current_action_point[0] - actor_point[0] and actor_point[1] == current_action_point[1]:
         for i in range(length):
             for j in range(ceil(width / 2)):
-                area_map.append([actor_point[0] - i - 1, actor_point[1] - floor(width / 2) + j])
+                area_map.append((actor_point[0] - i - 1, actor_point[1] - floor(width / 2) + j))
     # in top direction
     elif actor_point[0] == current_action_point[0] and current_action_point[1] - actor_point[1]:
         for i in range(length):
             for j in range(width):
-                area_map.append([actor_point[0] - floor(width / 2) + i, actor_point[1] - i - 1])
+                area_map.append((actor_point[0] - floor(width / 2) + i, actor_point[1] - i - 1))
     # in bottom direction
     elif current_action_point[0] == actor_point[0] and actor_point[1] - current_action_point[1]:
         for i in range(length):
             for j in range(width):
-                area_map.append([actor_point[0] - floor(width / 2) + i, actor_point[1] + i + 1])
+                area_map.append((actor_point[0] - floor(width / 2) + i, actor_point[1] + i + 1))
     return area_map
 
 
@@ -45,10 +45,10 @@ def calculate_diamond_area(action_point: Position, range_value: int):
     for i in range(range_value):
         for j in range(range_value):
             if i + j < range_value:
-                area_map.append([action_point[0] + i, action_point[1] + j])
-                area_map.append([action_point[0] + i, action_point[1] - j])
-                area_map.append([action_point[0] - i, action_point[1] + j])
-                area_map.append([action_point[0] - i, action_point[1] - j])
+                area_map.append((action_point[0] + i, action_point[1] + j))
+                area_map.append((action_point[0] + i, action_point[1] - j))
+                area_map.append((action_point[0] - i, action_point[1] + j))
+                area_map.append((action_point[0] - i, action_point[1] - j))
     return area_map
 
 
@@ -56,10 +56,10 @@ def calculate_square_area(action_point: Position, range_value: int):
     area_map = []
     for i in range(range_value):
         for j in range(range_value):
-            area_map.append([action_point[0] + i, action_point[1] + j])
-            area_map.append([action_point[0] + i, action_point[1] - j])
-            area_map.append([action_point[0] - i, action_point[1] + j])
-            area_map.append([action_point[0] - i, action_point[1] - j])
+            area_map.append((action_point[0] + i, action_point[1] + j))
+            area_map.append((action_point[0] + i, action_point[1] - j))
+            area_map.append((action_point[0] - i, action_point[1] + j))
+            area_map.append((action_point[0] - i, action_point[1] - j))
     return area_map
 
 

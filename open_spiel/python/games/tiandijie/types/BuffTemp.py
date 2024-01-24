@@ -1,6 +1,5 @@
 import enum
 import string
-from tkinter import EventType
 from typing import Callable, List, Any
 
 from open_spiel.python.games.tiandijie.types import Context, EventListener
@@ -13,11 +12,10 @@ class BuffType(enum.IntEnum):
     Others = 2
 
 
-class BuffTemp(Modifier):
+class BuffTemp():
     def __init__(self, buff_id: string, buff_type: BuffType, dispellable, expandable, stealable, modifier_dict,
                  upgradable: bool = False,
                  level: int = 1, on_event=None):
-        super().__init__(Modifier)
         if on_event is None:
             on_event = []
         self.id = buff_id
@@ -28,6 +26,4 @@ class BuffTemp(Modifier):
         self.stealable: bool = stealable
         self.expandable: bool = expandable
         self.on_event: List[EventListener]
-        for key, value in modifier_dict.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
+        self.modifier = Modifier(modifier_dict)

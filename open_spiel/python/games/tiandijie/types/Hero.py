@@ -29,7 +29,7 @@ class Hero:
         self.jishen_profession = BasicAttributes.JishenProfessions.ARCHER
         self.shenbin_profession = BasicAttributes.ShenbinProfessions.ARCHER
         self.huazhen_profession = BasicAttributes.HuazhenProfessions.ARCHER
-        self.position: Position = [0, 0]
+        self.position: Position = (0, 0)
         self.range: int = 2
         self.movement: int = 3
         self.initial_attributes: Attributes = Attributes(172, 89, 31, 22, 23, 60)

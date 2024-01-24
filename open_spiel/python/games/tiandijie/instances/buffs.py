@@ -37,5 +37,6 @@ class BuffTemps(Enum):
 
     # 中毒	有害	可驱散	可扩散	可偷取	行动结束时，损失10%气血，若每多移动1格，则额外损失5%气血（最多15%）
     zhongdu = BuffTemp('zhongdu', BuffType.Harm, True, True, True, {}, False, 1, [
-        EventListener(EventTypes.action_end, 1, partial(Effects.take_fixed_damage_by_percentage_per_each_move, percentage=5))
+        EventListener(EventTypes.action_end, 1, partial(Effects.take_fixed_damage_by_percentage, percentage=0.1)),
+        EventListener(EventTypes.action_end, 1, partial(Effects.take_fixed_damage_by_percentage_per_each_move, percentage=0.05))
         ])

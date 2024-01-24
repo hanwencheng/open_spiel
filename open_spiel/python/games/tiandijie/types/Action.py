@@ -11,8 +11,8 @@ class Action:
         self.skill: Skill = None
         self.move_range: int = 0
         self.moves: List[Position] = []
-        self.move_point: Position = [0, 0]
-        self.action_point: Position = [0, 0]
+        self.move_point: Position = (0, 0)
+        self.action_point: Position = (0, 0)
         self.movable: bool = movable
         self.actionable: bool = actionable
         self.actor = cast_hero
