@@ -1,15 +1,15 @@
 import inspect
-from open_spiel.python.games.tiandijie.primitives.buff.Buff import BuffType
+from open_spiel.python.games.tiandijie.primitives.buff.Buff import BuffTypes
 from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp, buffs
 from open_spiel.python.games.tiandijie.primitives.Context import Context
 
 
 def is_harm_buff(buff):
-    return isinstance(buff, BuffTemp) and buff.type == BuffType.Harm and buff.dispellable
+    return isinstance(buff, BuffTemp) and buff.type == BuffTypes.Harm and buff.dispellable
 
 
 def is_benefit_buff(buff):
-    return isinstance(buff, BuffTemp) and buff.type == BuffType.Benefit and buff.dispellable
+    return isinstance(buff, BuffTemp) and buff.type == BuffTypes.Benefit and buff.dispellable
 
 
 # Automatically gather all instances of BuffTemp from the buff_temps module

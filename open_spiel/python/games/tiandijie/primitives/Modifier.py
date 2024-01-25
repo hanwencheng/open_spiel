@@ -3,7 +3,10 @@ from functools import reduce
 from typing import List
 
 from open_spiel.python.games.tiandijie.calculation.Effects import get_current_action
+from open_spiel.python.games.tiandijie.primitives.Action import ActionTypes
 from open_spiel.python.games.tiandijie.primitives.Context import Context
+from open_spiel.python.games.tiandijie.primitives.formation.Formation import Formation
+from open_spiel.python.games.tiandijie.primitives.formation.FormationEffect import FormationEffect
 from open_spiel.python.games.tiandijie.primitives.hero import Hero
 
 
@@ -14,8 +17,6 @@ class Modifier:
         self.magic_attack: float = 0
         self.defense: float = 0
         self.magic_defense: float = 0
-        self.damage: float = 0
-        self.damage_reduction: float = 0
         self.magic_damage: float = 0
         self.magic_damage_reduction: float = 0
         self.heal: float = 0
@@ -27,27 +28,33 @@ class Modifier:
         # self.critical_damage_reduction = 0
 
         # Percentage attributes
-        self.attack_percentage: float = 1
-        self.magic_attack_percentage: float = 1
-        self.defense_percentage: float = 1
-        self.magic_defense_percentage: float = 1
-        self.damage_percentage: float = 1
-        self.damage_reduction_percentage: float = 1
-        self.magic_damage_percentage: float = 1
-        self.magic_damage_reduction_percentage: float = 1
-        self.heal_percentage: float = 1
-        self.life_percentage: float = 1
+        self.attack_percentage: float = 0
+        self.skill_damage_percentage: float = 0
+        self.single_target_skill_damage_percentage: float = 0
+        self.multi_target_skill_damage_percentage: float = 0
+        self.normal_attack_damage_percentage: float = 0
+        self.battle_damage_percentage: float = 0
 
-        self.luck_percentage: float = 1
-        self.critical_damage_percentage: float = 1
-        self.critical_damage_reduction_percentage: float = 1
-        self.fixed_damage_reduction_percentage: float = 1
+        self.magic_attack_percentage: float = 0
+        self.defense_percentage: float = 0
+        self.magic_defense_percentage: float = 0
+        self.damage_percentage: float = 0
+        self.damage_reduction_percentage: float = 0
+        self.magic_damage_percentage: float = 0
+        self.magic_damage_reduction_percentage: float = 0
+        self.heal_percentage: float = 0
+        self.life_percentage: float = 0
+
+        self.luck_percentage: float = 0
+        self.critical_damage_percentage: float = 0
+        self.critical_damage_reduction_percentage: float = 0
+        self.fixed_damage_reduction_percentage: float = 0
 
         # Other
         self.move_range: int = 0
         self.attack_range: int = 0
 
-        self.absolute_defense_range: int = 1
+        self.absolute_defense_range: int = 0
         self.passives_disabled: bool = False
         self.action_disabled: bool = False
         self.no_counterattack: bool = False
@@ -75,6 +82,28 @@ def accumulate_talents_modifier(context: Context, attr_name: string) -> float:
     counter_heroes = context.get_heroes_by_counter_player_id(current_player_id)
 
     partner_talents = reduce(lambda total, hero: total + getattr(hero.talents, attr_name), partner_heroes, float(0))
-    counter_talents = reduce(lambda total, hero: total + getattr(total, hero.talents, attr_name), counter_heroes, float(0))
+    counter_talents = reduce(lambda total, hero: total + getattr(total, hero.talents, attr_name), counter_heroes,
+                             float(0))
     return partner_talents + counter_talents
 
+
+def get_formation_modifier(context, attr_name: string) -> float:
+    current_player_id = context.get_current_player_id()
+    current_formation: Formation = context.get_formation_by_player_id(current_player_id)
+    basic_modifier_value = 0
+    if current_formation.is_active:
+        basic_modifier_value = getattr(current_formation.temp.basic_modifier, attr_name)
+        formation_effects: List[FormationEffect] = current_formation.temp.effects
+        for effect in formation_effects:
+            multiplier = effect.requirement(context)
+            if multiplier > 0:
+                basic_modifier_value += getattr(effect.modifier, attr_name) * multiplier
+    return basic_modifier_value
+
+
+def get_battle_damage_modifier(context: Context) -> float:
+    is_in_battle = get_current_action(context).in_battle
+    if is_in_battle:
+        return get_formation_modifier(context, 'battle_damage_percentage')
+    else:
+        return 0

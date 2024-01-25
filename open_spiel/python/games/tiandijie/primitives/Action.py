@@ -1,3 +1,4 @@
+import enum
 from typing import List
 from basics import Position
 
@@ -5,12 +6,21 @@ from open_spiel.python.games.tiandijie.primitives import Hero
 from open_spiel.python.games.tiandijie.primitives.skill import Skill
 
 
+class ActionTypes(enum.Enum):
+    HEAL = 0
+    ATTACK = 1
+    SKILL = 2
+    PASS = 3
+
+
 class Action:
     def __init__(self, cast_hero: Hero, affected_heroes, is_magic: bool, skill: Skill, movable, actionable):
         self.targets: List[Hero] = affected_heroes
         self.total_damage: float = 0
         self.is_magic: bool = is_magic
+        self.is_in_battle: bool = False
         self.skill: Skill = None
+        self.type: ActionTypes = ActionTypes.PASS
         self.move_range: int = 0
         self.moves: List[Position] = []
         self.move_point: Position = (0, 0)
@@ -25,6 +35,3 @@ class Action:
 
     def update_total_damage(self, total_damage: float):
         self.total_damage = total_damage
-
-
-

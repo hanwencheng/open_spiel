@@ -1,6 +1,7 @@
 from typing import List
 
-from open_spiel.python.games.tiandijie.primitives import Action, Formation
+from open_spiel.python.games.tiandijie.primitives import Action
+from open_spiel.python.games.tiandijie.primitives.formation import Formation
 from open_spiel.python.games.tiandijie.primitives.buff.Buff import Buff
 from open_spiel.python.games.tiandijie.primitives.hero import Hero
 
@@ -34,6 +35,9 @@ class Context:
 
     def get_current_player_id(self) -> int:
         return self.get_last_action().player_id
+
+    def get_formation_by_player_id(self, player_id: int) -> Formation:
+        return [formation for formation in self.formation if formation.player_id == player_id][0]
 
     def get_heroes_by_player_id(self, player_id: int) -> List[Hero]:
         return [hero for hero in self.heroes if hero.player_id == player_id]

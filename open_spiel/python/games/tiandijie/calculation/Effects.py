@@ -7,8 +7,8 @@ from open_spiel.python.games.tiandijie.calculation.calculate_damage import calcu
 from open_spiel.python.games.tiandijie.primitives import Context, Action
 from open_spiel.python.games.tiandijie.primitives.buff.Buff import Buff, CasterInfo
 from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp
-from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffType
-from open_spiel.python.games.tiandijie.primitives.hero import HeroTemp, Hero
+from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffTypes
+from open_spiel.python.games.tiandijie.primitives.hero import Hero
 from open_spiel.python.games.tiandijie.primitives.Range import Range
 
 
@@ -56,7 +56,7 @@ class Effects:
         current_action = get_current_action(context)
         for target in current_action.targets:
             for buff in target.buffs:
-                if buff.type == BuffType.Benefit:  # Assuming each buff has an 'is_advantage' attribute
+                if buff.type == BuffTypes.Benefit:  # Assuming each buff has an 'is_advantage' attribute
                     buff.duration -= duration_reduction
                     if buff.duration < 0:
                         buff.duration = 0  # Prevent negative duration

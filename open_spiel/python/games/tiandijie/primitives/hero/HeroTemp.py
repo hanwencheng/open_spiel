@@ -15,13 +15,15 @@ class HeroTemp:
         self.name = "玄羽"
         self.pinyin = "XUANYU"
         self.rarity = "绝"
+
+        self.has_formation = False
+        self.formation = None
         self.passives: List[Passive] = []
         self.gender = Gender.FEMALE
         if self.gender not in Gender:
             raise ValueError("性别必须是‘男’或‘女’")
         self.element: Elements = Elements.DARK
         self.profession: Professions = Professions.ARCHER
-        self.position: Position = (0, 0)
         self.range: int = 2
         self.movement: int = 3
         self.level0_attributes: Attributes = Attributes(172, 89, 31, 22, 23, 60)

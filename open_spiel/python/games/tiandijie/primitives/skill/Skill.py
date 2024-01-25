@@ -1,9 +1,17 @@
+import enum
 from typing import Callable, Any
 from typing import List
 
 from open_spiel.python.games.tiandijie.primitives import Range
 from open_spiel.python.games.tiandijie.primitives.Context import Context
 
+class SkillTargetTypes(enum.Enum):
+    ENEMY_SINGLE = 0
+    ENEMY_RANGE = 1
+    PARTNER_SINGLE = 2
+    PARTNER_RANGE = 3
+    SELF = 4
+    TERRAIN = 5
 
 class Skill:
     def __init__(self, damage_multiplier: float, skill_range: Range,
@@ -18,3 +26,4 @@ class Skill:
         self.before_action_fixed_damage_modifier = before_fixed_damage_modifier
         self.after_action_fixed_damage_modifier = after_fixed_damage_modifier
         self.range = skill_range
+        self.target_type = SkillTargetTypes.SELF

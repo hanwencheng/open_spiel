@@ -12,10 +12,14 @@ class Hero:
         self.player_id = player_id
         self.temp: HeroTemp = hero_temp
         self.equipments: List[Equipment] = []
+        self.position = (0, 0)
         self.stones = Stone()
         self.buffs: List[Buff] = []
         self.initial_attributes = None
         self.current_life: float = 1.0
+        self.max_life: float = 1.0
+        self.died_once: bool = False
+        self.counterattack_count = 0
         self.initialize_attributes()
 
     def initialize_attributes(self):
@@ -29,8 +33,8 @@ class Hero:
 
     def take_harm(self, harm_value: float):
         if harm_value > 0:
-            self.current_life -= harm_value
+            self.current_life = max(self.current_life - harm_value, 0)
 
     def take_healing(self, healing_value: float):
         if healing_value > 0:
-            self.current_life += healing_value
+            self.current_life = min(self.current_life + healing_value, self.max_life)

@@ -99,6 +99,12 @@ def create_diamond_range(range_value: int) -> Range:
 def create_square_range(range_value: int) -> Range:
     return Range(RangeType.SQUARE, range_value)
 
+
+def calculate_if_targe_in_diamond_range(base_position: Position, target_position: Position, range_value: int) -> bool:
+    return abs(base_position[0] - target_position[0]) + abs(base_position[1] - target_position[1]) <= range_value
+
+
+
 # class DirectionalRange(Range):
 #     def __int__(self, is_directional: True, length, width, start, end):
 #         self.range_type = RangeType.DIRECTIONAL
