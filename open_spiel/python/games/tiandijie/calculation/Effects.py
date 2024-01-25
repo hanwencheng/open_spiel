@@ -8,7 +8,7 @@ from open_spiel.python.games.tiandijie.primitives import Context, Action
 from open_spiel.python.games.tiandijie.primitives.buff.Buff import Buff, CasterInfo
 from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp
 from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffType
-from open_spiel.python.games.tiandijie.primitives.Hero import HeroTemp
+from open_spiel.python.games.tiandijie.primitives.hero import HeroTemp, Hero
 from open_spiel.python.games.tiandijie.primitives.Range import Range
 
 
@@ -16,7 +16,7 @@ def get_current_action(context: Context) -> Action:
     return context.actions[-1]
 
 
-def _add_buffs(target: HeroTemp, buff_temp: List[BuffTemp], duration: float):
+def _add_buffs(target: Hero, buff_temp: List[BuffTemp], duration: float):
     new_buffs = [Buff(b, duration) for b in buff_temp]
     for new_buff in new_buffs:
         existing_buff = next((buff for buff in target.buffs if buff.temp.id == new_buff.temp.id), None)
@@ -33,7 +33,7 @@ def _add_buffs(target: HeroTemp, buff_temp: List[BuffTemp], duration: float):
 
 class Effects:
     @staticmethod
-    def add_buffs(target: HeroTemp, buff_temp: List[BuffTemp], duration: float, context: Context):
+    def add_buffs(target: Hero, buff_temp: List[BuffTemp], duration: float, context: Context):
         _add_buffs(target, buff_temp, duration)
 
     @staticmethod
