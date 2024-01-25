@@ -3,7 +3,7 @@ from math import ceil, floor
 from typing import List
 
 from basics import Position
-from open_spiel.python.games.tiandijie.types import Context
+from open_spiel.python.games.tiandijie.primitives import Context
 
 
 class RangeType(enum.IntEnum):

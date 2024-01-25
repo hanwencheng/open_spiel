@@ -10,14 +10,7 @@ class Elements(enum.IntEnum):
     ETHEREAL = 6  # 幽
 
 
-def get_elemental_multiplier(attacker_element, defender_element, is_attacker):
-    """
-    Calculate the damage multiplier based on elemental advantage.
-
-    :param attacker_element: The element of the attacker.
-    :param defender_element: The element of the defender.
-    :return: The damage multiplier based on elemental advantage.
-    """
+def get_elemental_multiplier(attacker_element: Elements, defender_element: Elements, is_attacker: bool) -> float:
     elemental_advantage = {
         Elements.FIRE: Elements.THUNDER,
         Elements.THUNDER: Elements.WATER,
@@ -44,4 +37,3 @@ def get_elemental_multiplier(attacker_element, defender_element, is_attacker):
         return 0.75
     else:
         return 1.0
-

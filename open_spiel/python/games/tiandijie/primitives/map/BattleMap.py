@@ -1,7 +1,7 @@
 from typing import List
 
-from open_spiel.python.games.tiandijie.types.map.Terrain import Terrain
-from open_spiel.python.games.tiandijie.types.map.TerrainType import TerrainType
+from open_spiel.python.games.tiandijie.primitives.map.Terrain import Terrain
+from open_spiel.python.games.tiandijie.primitives.map.TerrainType import TerrainType
 
 type TerrainMap = List[List[Terrain]]
 

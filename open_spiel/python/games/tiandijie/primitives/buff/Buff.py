@@ -1,5 +1,6 @@
 from open_spiel.python.games.tiandijie.calculation.calculate import get_attack
-from open_spiel.python.games.tiandijie.types import Hero, Context, BuffTemp
+from open_spiel.python.games.tiandijie.primitives import Hero, Context
+from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp
 
 
 class CasterInfo:

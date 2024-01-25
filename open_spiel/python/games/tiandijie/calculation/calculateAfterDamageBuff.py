@@ -1,4 +1,4 @@
-from open_spiel.python.games.tiandijie.types import Hero
+from open_spiel.python.games.tiandijie.primitives import Hero
 
 
 def calculate_after_damage_buff(attacker_instance: Hero, defender_instance: Hero, context: Context):

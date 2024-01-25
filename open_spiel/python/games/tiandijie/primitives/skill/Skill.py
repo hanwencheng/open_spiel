@@ -1,8 +1,8 @@
 from typing import Callable, Any
 from typing import List
 
-from open_spiel.python.games.tiandijie.types import Buff, Range
-from open_spiel.python.games.tiandijie.types.Context import Context
+from open_spiel.python.games.tiandijie.primitives import Range
+from open_spiel.python.games.tiandijie.primitives.Context import Context
 
 
 class Skill:

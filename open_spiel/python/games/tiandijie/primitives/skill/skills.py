@@ -1,7 +1,7 @@
 
-from open_spiel.python.games.tiandijie.types.Range import RangeType
-from open_spiel.python.games.tiandijie.types.Skill import Skill
-from open_spiel.python.games.tiandijie.instances.buffs import *
+from open_spiel.python.games.tiandijie.primitives.Range import RangeType
+from open_spiel.python.games.tiandijie.primitives.skill.Skill import Skill
+from open_spiel.python.games.tiandijie.primitives.buff.buffs import *
 
 normal_attack = Skill(1, True)
 

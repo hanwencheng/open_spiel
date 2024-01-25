@@ -1,8 +1,8 @@
 from functools import partial
 
-from open_spiel.python.games.tiandijie.types import Context
-from open_spiel.python.games.tiandijie.types.Buff import CasterInfo
-from open_spiel.python.games.tiandijie.types.Event import EventTypes
+from open_spiel.python.games.tiandijie.primitives import Context
+from open_spiel.python.games.tiandijie.primitives.buff.Buff import CasterInfo
+from open_spiel.python.games.tiandijie.primitives.event.Event import EventTypes
 
 
 class EventListener:

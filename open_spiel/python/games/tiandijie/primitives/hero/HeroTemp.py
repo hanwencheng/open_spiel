@@ -1,39 +1,31 @@
 from typing import List
-from basics import Position
 
-from open_spiel.python.games.Element import Elements
-from open_spiel.python.games.tiandijie import wunei
-from open_spiel.python.games.tiandijie.HeroBasics import Gender, Professions
-from open_spiel.python.games.tiandijie.types import BasicAttributes, Passive, Buff, Equipment
-from open_spiel.python.games.tiandijie.types.Stone import Stone
-from open_spiel.python.games.tiandijie.types.Attributes import Attributes
+from open_spiel.python.games.tiandijie.primitives.hero.Element import Elements
+from open_spiel.python.games.tiandijie.primitives.hero.HeroBasics import Gender, Professions
+from open_spiel.python.games.tiandijie.primitives import Passive, Equipment
+from open_spiel.python.games.tiandijie.primitives.Stone import Stone
+from open_spiel.python.games.tiandijie.primitives.hero.Attributes import Attributes, generate_max_level_attributes
+from open_spiel.python.games.tiandijie.primitives.basics import Position
+from open_spiel.python.games.tiandijie.primitives.hero.BasicAttributes import AttributesTuple
 
 
-class Hero:
-    def __init__(self, basicInfo, initial_attributes, growth_coefficients, skills, playerId):
+class HeroTemp:
+    def __init__(self, basicInfo, level0_attributes, growth_coefficients, skills):
         self.current_life: float = 1
         self.name = "玄羽"
         self.pinyin = "XUANYU"
         self.rarity = "绝"
-        self.playerId = 0
-        self.buffs: List[Buff] = []
         self.passives: List[Passive] = []
-        self.stones = Stone()
-        self.equipments: List[Equipment] = []
         self.gender = Gender.FEMALE
         if self.gender not in Gender:
             raise ValueError("性别必须是‘男’或‘女’")
         self.element: Elements = Elements.DARK
         self.profession: Professions = Professions.ARCHER
-        self.wunei_profession = wunei.WuneiProfessions.ARCHER
-        self.jishen_profession = BasicAttributes.JishenProfessions.ARCHER
-        self.shenbin_profession = BasicAttributes.ShenbinProfessions.ARCHER
-        self.huazhen_profession = BasicAttributes.HuazhenProfessions.ARCHER
         self.position: Position = (0, 0)
         self.range: int = 2
         self.movement: int = 3
-        self.initial_attributes: Attributes = Attributes(172, 89, 31, 22, 23, 60)
-        self.growth_coefficients: Attributes = Attributes(25.77, 13.42, 4.7, 3.36, 3.49, 0.6)
+        self.level0_attributes: Attributes = Attributes(172, 89, 31, 22, 23, 60)
+        self.growth_coefficients: AttributesTuple = growth_coefficients
         self.talent = "玄翎鸩影"
         self.initial_skill = "逐风破"
         self.skills = {
@@ -50,12 +42,10 @@ class Hero:
         self.initialize_attributes()
 
     def initialize_attributes(self):
-        self.current_attributes.generate_max_level_attributes(
+        generate_max_level_attributes(
+            self.current_attributes,
             self.growth_coefficients,
-            self.wunei_profession,
-            self.jishen_profession,
-            self.shenbin_profession,
-            self.huazhen_profession
+            self.profession
         )
         self.current_life = self.current_attributes.life
 

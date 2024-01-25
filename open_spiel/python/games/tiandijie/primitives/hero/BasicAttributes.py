@@ -1,5 +1,10 @@
 import enum
 
+type MoveRange = (int, int)  # (move_type, move_range, attack_range)
+type AttributesTuple = (
+    float, float, float, float, float, float)  # (life, attack, defense, magic_attack, magic_defense, luck)
+
+
 class MovesRanges(enum.Enum):
     SWORDSMAN = (0, 3, 1)
     SWORDSMAN_WITH_MAGIC = (1, 3, 1)  # LIFE, ATTACK, DEFENSE, MAGIC_ATTACK, MAGIC_DEFENSE, LUCK
@@ -12,6 +17,7 @@ class MovesRanges(enum.Enum):
     SORCERER_DAMAGE = (8, 3, 2)
     SORCERER_ASSIST = (9, 3, 2)
     WARRIOR = (10, 4, 1)
+
 
 class JishenProfessions(enum.Enum):
     SWORDSMAN = (0, 867, 268, 335, 0, 202, 0)

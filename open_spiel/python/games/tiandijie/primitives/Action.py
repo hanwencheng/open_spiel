@@ -1,7 +1,9 @@
 from typing import List
 from basics import Position
 
-from open_spiel.python.games.tiandijie.types import Hero, Skill
+from open_spiel.python.games.tiandijie.primitives import Hero
+from open_spiel.python.games.tiandijie.primitives.skill import Skill
+
 
 class Action:
     def __init__(self, cast_hero: Hero, affected_heroes, is_magic: bool, skill: Skill, movable, actionable):
@@ -16,6 +18,7 @@ class Action:
         self.movable: bool = movable
         self.actionable: bool = actionable
         self.actor = cast_hero
+        self.player_id = cast_hero.player_id
 
     def update_affected_heroes(self, affected_heroes: List[Hero]):
         self.targets = affected_heroes

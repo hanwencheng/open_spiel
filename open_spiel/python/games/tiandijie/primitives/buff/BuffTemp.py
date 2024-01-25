@@ -1,9 +1,9 @@
 import enum
 import string
-from typing import Callable, List, Any
+from typing import List
 
-from open_spiel.python.games.tiandijie.types import Context, EventListener
-from open_spiel.python.games.tiandijie.types.Modifier import Modifier
+from open_spiel.python.games.tiandijie.primitives.event import EventListener
+from open_spiel.python.games.tiandijie.primitives.Modifier import Modifier
 
 
 class BuffType(enum.IntEnum):

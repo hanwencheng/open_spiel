@@ -1,11 +1,10 @@
 from enum import Enum
 from functools import partial
-from tkinter import EventType
 
 from open_spiel.python.games.tiandijie.calculation.Effects import Effects
-from open_spiel.python.games.tiandijie.types.BuffTemp import BuffTemp, BuffType
-from open_spiel.python.games.tiandijie.types.Event import EventTypes
-from open_spiel.python.games.tiandijie.types.EventListener import EventListener
+from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffTemp, BuffType
+from open_spiel.python.games.tiandijie.primitives.event.Event import EventTypes
+from open_spiel.python.games.tiandijie.primitives.event.EventListener import EventListener
 
 
 class BuffTemps(Enum):

@@ -1,7 +1,7 @@
 import inspect
-from open_spiel.python.games.tiandijie.instances import buffs
-from open_spiel.python.games.tiandijie.types.Buff import BuffTemp, BuffType
-from open_spiel.python.games.tiandijie.types.Context import Context
+from open_spiel.python.games.tiandijie.primitives.buff.Buff import BuffType
+from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp, buffs
+from open_spiel.python.games.tiandijie.primitives.Context import Context
 
 
 def is_harm_buff(buff):

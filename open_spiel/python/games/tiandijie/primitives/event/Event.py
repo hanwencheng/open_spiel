@@ -2,11 +2,11 @@ import enum
 import string
 from typing import List
 
-from open_spiel.python.games.tiandijie.types import Action
-from open_spiel.python.games.tiandijie.types.Buff import CasterInfo
-from open_spiel.python.games.tiandijie.types.Context import Context
-from open_spiel.python.games.tiandijie.types.EventListener import EventListener
-from open_spiel.python.games.tiandijie.types.Hero import Hero
+from open_spiel.python.games.tiandijie.primitives import Action
+from open_spiel.python.games.tiandijie.primitives.buff.Buff import CasterInfo
+from open_spiel.python.games.tiandijie.primitives.Context import Context
+from open_spiel.python.games.tiandijie.primitives.event.EventListener import EventListener
+from open_spiel.python.games.tiandijie.primitives.Hero import HeroTemp
 
 
 class EventTypes(enum.Enum):
@@ -46,6 +46,8 @@ class EventTypes(enum.Enum):
 
     enemy_battle_start = 'enemy_battle_start'
     enemy_battle_end = 'enemy_battle_end'
+    
+    hero_death = 'hero_death'
 
     # actions
     damage = 'damage'
@@ -65,7 +67,7 @@ def event_listener_calculator(event_type: string, context: Context):
     current_action: Action = context.get_last_action()
     if current_action is None:
         return
-    actor: Hero = current_action.actor
+    actor: HeroTemp = current_action.actor
     # Calculated Buffs
     for buff in actor.buffs:
         buff_event_listeners: List[EventListener] = buff.temp.on_event

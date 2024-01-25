@@ -1,7 +1,7 @@
 import unittest
 
 from open_spiel.python.games.tiandijie.calculation.PathFinding import bfs_move_range, a_star_search
-from open_spiel.python.games.tiandijie.types.map.BattleMap import BattleMap
+from open_spiel.python.games.tiandijie.primitives.map.BattleMap import BattleMap
 
 
 class TestMap(unittest.TestCase):

@@ -1,4 +1,4 @@
-from open_spiel.python.games.tiandijie.types.map.TerrainBuff import TerrainBuff
+from open_spiel.python.games.tiandijie.primitives.map.TerrainBuff import TerrainBuff
 
 
 class Collectable:

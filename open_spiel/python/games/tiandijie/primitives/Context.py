@@ -1,7 +1,8 @@
 from typing import List
 
-from open_spiel.python.games.tiandijie.types import Action, Formation, Hero
-from open_spiel.python.games.tiandijie.types.Buff import Buff
+from open_spiel.python.games.tiandijie.primitives import Action, Formation
+from open_spiel.python.games.tiandijie.primitives.buff.Buff import Buff
+from open_spiel.python.games.tiandijie.primitives.hero import Hero
 
 
 class Context:
@@ -31,3 +32,11 @@ class Context:
     def init_heroes(self, heroes: List[Hero]):
         self.heroes = heroes
 
+    def get_current_player_id(self) -> int:
+        return self.get_last_action().player_id
+
+    def get_heroes_by_player_id(self, player_id: int) -> List[Hero]:
+        return [hero for hero in self.heroes if hero.player_id == player_id]
+
+    def get_heroes_by_counter_player_id(self, player_id: int) -> List[Hero]:
+        return [hero for hero in self.heroes if hero.player_id != player_id]
