@@ -1,5 +1,5 @@
 
-from open_spiel.python.games.tiandijie.primitives.Range import RangeType
+from open_spiel.python.games.tiandijie.calculation.Range import RangeType
 from open_spiel.python.games.tiandijie.primitives.skill.Skill import Skill
 from open_spiel.python.games.tiandijie.primitives.buff.buffs import *
 

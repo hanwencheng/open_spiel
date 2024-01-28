@@ -4,7 +4,7 @@ from typing import List
 
 from open_spiel.python.games.tiandijie.calculation.Effects import get_current_action
 from open_spiel.python.games.tiandijie.primitives.Context import Context
-from open_spiel.python.games.tiandijie.primitives.ModifierAttributes import ModifierAttributes
+from open_spiel.python.games.tiandijie.calculation.ModifierAttributes import ModifierAttributes
 from open_spiel.python.games.tiandijie.primitives.formation.Formation import Formation
 from open_spiel.python.games.tiandijie.primitives.formation.FormationEffect import FormationEffect
 from open_spiel.python.games.tiandijie.primitives.hero import Hero
@@ -54,7 +54,7 @@ class Modifier:
 
         # self.is_passives_disabled: bool = False
         # self.is_action_disabled: bool = False
-        # self.is_no_counterattack: bool = False
+        # self.counterattack_disabled: bool = False
         # self.is_counterattack_first: bool = False
 
         for attribute_name in dir(ModifierAttributes):
@@ -111,3 +111,30 @@ def get_battle_damage_modifier(context: Context) -> float:
         return get_formation_modifier(context, ModifierAttributes.battle_damage_percentage)
     else:
         return 0
+
+
+def get_level1_modified_result(hero_instance: Hero, value_attr_name: str, basic: float) -> float:
+    accumulated_stones_value_modifier = accumulate_attribute(hero_instance.stones.value, value_attr_name)
+    accumulated_stones_percentage_modifier = accumulate_attribute(hero_instance.stones.percentage,
+                                                                  value_attr_name + '_percentage')
+    return basic * (1 + accumulated_stones_percentage_modifier) + accumulated_stones_value_modifier
+
+
+def get_level2_modifier(hero_instance: Hero, context: Context, attr_name: str) -> float:
+    accumulated_buffs_modifier = accumulate_attribute(hero_instance.buffs, attr_name)
+    accumulated_stones_effect_modifier = accumulate_attribute(hero_instance.stones.effect, attr_name)
+    accumulated_talents_modifier = accumulate_talents_modifier(context, attr_name)
+    accumulated_equipments_modifier = accumulate_attribute(hero_instance.equipments, attr_name)
+    formation_modifier = get_formation_modifier(context, attr_name)
+    accumulated_passives_modifier = accumulate_attribute(hero_instance.enabled_passives, attr_name)
+
+    return accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier + formation_modifier + accumulated_passives_modifier
+
+
+def get_modifier(hero_instance: Hero, context: Context, attr_name: str) -> float:
+    accumulated_buffs_modifier = accumulate_attribute(hero_instance.buffs, attr_name)
+    accumulated_talents_modifier = accumulate_talents_modifier(context, attr_name)
+    accumulated_equipments_modifier = accumulate_attribute(hero_instance.equipments, attr_name)
+    accumulated_passives_modifier = accumulate_attribute(hero_instance.enabled_passives, attr_name)
+
+    return accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_equipments_modifier + accumulated_passives_modifier

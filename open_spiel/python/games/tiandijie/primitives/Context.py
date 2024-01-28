@@ -24,7 +24,7 @@ class Context:
             return None  # Return None if there are no actions
 
     def get_partners_in_range(self, hero: Hero, range_value: int) -> List[Hero]:
-        return []
+        pass
 
     def init_buffs(self, harm_buffs, benefit_buffs):
         self.harm_buffs = harm_buffs
@@ -44,3 +44,6 @@ class Context:
 
     def get_heroes_by_counter_player_id(self, player_id: int) -> List[Hero]:
         return [hero for hero in self.heroes if hero.player_id != player_id]
+
+    def remove_hero(self, hero: Hero):
+        self.heroes.remove(hero)

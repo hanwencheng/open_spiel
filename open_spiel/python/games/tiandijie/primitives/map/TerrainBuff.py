@@ -6,7 +6,7 @@ from typing import List
 from open_spiel.python.games.tiandijie.calculation.Effects import Effects
 from open_spiel.python.games.tiandijie.primitives.event.Event import EventTypes
 from open_spiel.python.games.tiandijie.primitives.event.EventListener import EventListener
-from open_spiel.python.games.tiandijie.primitives.Modifier import Modifier
+from open_spiel.python.games.tiandijie.calculation.Modifier import Modifier
 
 
 class TerrainBuffTemp:

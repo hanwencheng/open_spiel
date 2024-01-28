@@ -2,15 +2,10 @@ import enum
 from math import ceil, floor
 from typing import List
 
-from basics import Position
+
+from open_spiel.python.games.tiandijie.calculation.RangeType import RangeType
 from open_spiel.python.games.tiandijie.primitives import Context
-
-
-class RangeType(enum.IntEnum):
-    POINT: 0
-    DIRECTIONAL: 1
-    SQUARE: 2
-    DIAMOND: 3
+from open_spiel.python.games.tiandijie.basics import Position
 
 
 # return the area in the right bottom direction based on the actor point
@@ -42,9 +37,24 @@ def calculate_direction_area(actor_point: Position, current_action_point: Positi
 
 def calculate_diamond_area(action_point: Position, range_value: int):
     area_map = []
-    for i in range(range_value):
-        for j in range(range_value):
-            if i + j < range_value:
+    for i in range(range_value + 1):
+        for j in range(range_value + 1):
+            if i + j < range_value + 1:
+                if i + j == 0:
+                    area_map.append((action_point[0], action_point[1]))
+                else:
+                    area_map.append((action_point[0] + i, action_point[1] + j))
+                    area_map.append((action_point[0] + i, action_point[1] - j))
+                    area_map.append((action_point[0] - i, action_point[1] + j))
+                    area_map.append((action_point[0] - i, action_point[1] - j))
+    return area_map
+
+
+def calculate_archer_area(action_point: Position, range_value: int):
+    area_map = []
+    for i in range(range_value + 1):
+        for j in range(range_value + 1):
+            if 1 < i + j < range_value + 1:
                 area_map.append((action_point[0] + i, action_point[1] + j))
                 area_map.append((action_point[0] + i, action_point[1] - j))
                 area_map.append((action_point[0] - i, action_point[1] + j))
@@ -54,17 +64,20 @@ def calculate_diamond_area(action_point: Position, range_value: int):
 
 def calculate_square_area(action_point: Position, range_value: int):
     area_map = []
-    for i in range(range_value):
-        for j in range(range_value):
-            area_map.append((action_point[0] + i, action_point[1] + j))
-            area_map.append((action_point[0] + i, action_point[1] - j))
-            area_map.append((action_point[0] - i, action_point[1] + j))
-            area_map.append((action_point[0] - i, action_point[1] - j))
+    for i in range(range_value + 1):
+        for j in range(range_value + 1):
+            if i == j == 0:
+                area_map.append((action_point[0], action_point[1]))
+            else:
+                area_map.append((action_point[0] + i, action_point[1] + j))
+                area_map.append((action_point[0] + i, action_point[1] - j))
+                area_map.append((action_point[0] - i, action_point[1] + j))
+                area_map.append((action_point[0] - i, action_point[1] - j))
     return area_map
 
 
 class Range:
-    def __init__(self, range_type: RangeType, range_value: int, length=None, width=None):
+    def __init__(self, range_type: RangeType, range_value: int = 0, length=None, width=None):
         self.range_type = range_type
         self.length = length
         self.width = width
@@ -79,13 +92,19 @@ class Range:
         elif self.range_type == RangeType.POINT:
             return [action_point]
         elif self.range_type == RangeType.DIAMOND:
-            return calculate_diamond_area(actor_point, action_point, self.range)
+            return calculate_diamond_area(actor_point, self.range)
+        elif self.range_type == RangeType.ARCHER:
+            return calculate_archer_area(actor_point, self.range)
         else:
             return calculate_square_area(action_point, self.range)
 
+    def check_if_target_in_range(self, target_position: Position, context: Context) -> bool:
+        area_map = self.get_area(context)
+        return target_position in area_map
 
-def create_directional_range(range_value: int, length: int, width: int) -> Range:
-    return Range(RangeType.DIRECTIONAL, 0, length, width)
+
+def create_directional_range(length: int, width: int) -> Range:
+    return Range(RangeType.DIRECTIONAL,0, length, width)
 
 
 def create_point_range() -> Range:

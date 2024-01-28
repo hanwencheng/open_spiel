@@ -6,14 +6,17 @@ class ModifierAttributes:
     heal = 'heal'
     life = 'life'
     luck = 'luck'
-    critical = 'critical'
-    critical_reduction = 'critical_reduction'
+    critical_percentage = 'critical' # critical_damage
+    critical_percentage_reduction = 'critical_reduction'
     attack_percentage = 'attack_percentage'
     skill_damage_percentage = 'skill_damage_percentage'
     single_target_skill_damage_percentage = 'single_target_skill_damage_percentage'
     multi_target_skill_damage_percentage = 'multi_target_skill_damage_percentage'
     normal_attack_damage_percentage = 'normal_attack_damage_percentage'
+    penetration_percentage = 'penetration_percentage'
+    magic_penetration_percentage = 'magic_penetration_percentage'
     battle_damage_percentage = 'battle_damage_percentage'
+    battle_damage_reduction_percentage = 'battle_damage_reduction_percentage'
     magic_attack_percentage = 'magic_attack_percentage'
     defense_percentage = 'defense_percentage'
     magic_defense_percentage = 'magic_defense_percentage'
@@ -32,8 +35,11 @@ class ModifierAttributes:
     absolute_defense_range = 'absolute_defense_range'
     counterattack_first_limit = 'counterattack_first_limit'
 
+    element_advantage_multiplier = 'element_advantage_multiplier'
+    element_disadvantage_multiplier = 'element_disadvantage_multiplier'
+
     is_passives_disabled = 'passives_disabled'
     is_action_disabled = 'action_disabled'
-    is_no_counterattack = 'no_counterattack'
+    is_counterattack_disabled = 'counterattack_disabled'
     is_counterattack_first = 'counterattack_first'
 

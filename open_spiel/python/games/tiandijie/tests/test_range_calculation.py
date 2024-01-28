@@ -1,7 +1,7 @@
 # test calculate_direction_area function
 import unittest
 
-from open_spiel.python.games.tiandijie.primitives.Range import calculate_direction_area
+from open_spiel.python.games.tiandijie.calculation.Range import calculate_direction_area
 
 
 class TestCalculateDirectionArea(unittest.TestCase):

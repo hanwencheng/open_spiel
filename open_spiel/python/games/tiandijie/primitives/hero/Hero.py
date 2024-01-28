@@ -1,17 +1,22 @@
 from typing import List
 
 from open_spiel.python.games.tiandijie.primitives import Equipment
+from open_spiel.python.games.tiandijie.primitives.Action import Action
 from open_spiel.python.games.tiandijie.primitives.Stone import Stone
 from open_spiel.python.games.tiandijie.primitives.hero.Attributes import Attributes, generate_max_level_attributes
 from open_spiel.python.games.tiandijie.primitives.hero import HeroTemp
 from open_spiel.python.games.tiandijie.primitives.buff import Buff
+from open_spiel.python.games.tiandijie.primitives.skill.Skill import Skill
 
 
 class Hero:
     def __init__(self, player_id: int, hero_temp: HeroTemp):
+        self.id = hero_temp.id + player_id
         self.player_id = player_id
         self.temp: HeroTemp = hero_temp
         self.equipments: List[Equipment] = []
+        self.enabled_passives: List[Skill] = []
+        self.enabled_skills: List[Skill] = []
         self.position = (0, 0)
         self.stones = Stone()
         self.buffs: List[Buff] = []
@@ -38,3 +43,10 @@ class Hero:
     def take_healing(self, healing_value: float):
         if healing_value > 0:
             self.current_life = min(self.current_life + healing_value, self.max_life)
+
+    def update_position(self, action: Action):
+        self.position = action.move_point
+        #TODO move_path
+
+    def add_counter_attack_count(self):
+        self.counterattack_count += 1

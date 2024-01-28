@@ -1,9 +1,8 @@
 from random import random
 
+from open_spiel.python.games.tiandijie.primitives.Action import Action
 from open_spiel.python.games.tiandijie.primitives.hero.Element import get_elemental_multiplier
-from open_spiel.python.games.tiandijie.calculation.calculate import get_attack, get_defense_with_penetration, \
-    get_damage_modifier, get_damage_reduction_modifier, get_attacker_hit_probability, get_defender_hit_resistance, \
-    get_critical_damage_modifier, get_critical_damage_reduction_modifier, get_fixed_damage_reduction_modifier
+from open_spiel.python.games.tiandijie.calculation.attribute_calculator import *
 from open_spiel.python.games.tiandijie.primitives import Context
 from open_spiel.python.games.tiandijie.primitives.hero import HeroTemp, Hero
 
@@ -12,13 +11,23 @@ LIEXING_DAMAGE_REDUCTION = 4
 LIEXING_DAMAGE_INCREASE = 4
 
 
-def calculate_damage(attacker_instance: Hero, defender_instance: Hero, context):
+def apply_damage(context: Context):
     action = context.get_last_action()
+    targets = context.get_last_action().targets
+    for target in targets:
+        calculate_damage(action.actor, target, action, context)
+
+
+def apply_counterattack_damage(context: Context):
+    pass
+
+
+def calculate_damage(attacker_instance: Hero, defender_instance: Hero, action: Action, context):
     is_magic = action.is_magic
     skill = action.skill
-    attacker_elemental_multiplier = get_elemental_multiplier(attacker_instance.temp.element, defender_instance.temp.element, True)
+    attacker_elemental_multiplier = get_elemental_multiplier(attacker_instance.temp.element, defender_instance.temp.element, True) + get_element_advantage_multiplier(attacker_instance.temp.element, defender_instance.temp.element)
     defender_elemental_multiplier = get_elemental_multiplier(attacker_instance.temp.element, defender_instance.temp.element,
-                                                             False)
+                                                             False) + get_element_disadvantage_multiplier(defender_instance.temp.element, attacker_instance.temp.element)
 
     # Calculating attack-defense difference
     attack_defense_difference = (

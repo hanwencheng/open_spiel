@@ -2,10 +2,8 @@ from typing import List
 
 from open_spiel.python.games.tiandijie.primitives.hero.Element import Elements
 from open_spiel.python.games.tiandijie.primitives.hero.HeroBasics import Gender, Professions
-from open_spiel.python.games.tiandijie.primitives import Passive, Equipment
-from open_spiel.python.games.tiandijie.primitives.Stone import Stone
+from open_spiel.python.games.tiandijie.primitives import Passive
 from open_spiel.python.games.tiandijie.primitives.hero.Attributes import Attributes, generate_max_level_attributes
-from open_spiel.python.games.tiandijie.primitives.basics import Position
 from open_spiel.python.games.tiandijie.primitives.hero.BasicAttributes import AttributesTuple
 
 
@@ -16,6 +14,7 @@ class HeroTemp:
         self.pinyin = "XUANYU"
         self.rarity = "绝"
 
+        self.flyable = False
         self.has_formation = False
         self.formation = None
         self.passives: List[Passive] = []

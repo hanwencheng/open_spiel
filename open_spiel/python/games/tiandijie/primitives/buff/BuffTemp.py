@@ -3,7 +3,7 @@ import string
 from typing import List
 
 from open_spiel.python.games.tiandijie.primitives.event import EventListener
-from open_spiel.python.games.tiandijie.primitives.Modifier import Modifier
+from open_spiel.python.games.tiandijie.calculation.Modifier import Modifier
 
 
 class BuffTypes(enum.IntEnum):

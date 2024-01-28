@@ -1,6 +1,6 @@
 from typing import List, Any
 
-from open_spiel.python.games.tiandijie.primitives.Modifier import Modifier
+from open_spiel.python.games.tiandijie.calculation.Modifier import Modifier
 from open_spiel.python.games.tiandijie.primitives.formation import FormationEffect
 
 

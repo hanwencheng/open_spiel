@@ -5,7 +5,7 @@ from open_spiel.python.games.tiandijie.calculation.Effects import Effects
 from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffTemp, BuffTypes
 from open_spiel.python.games.tiandijie.primitives.event.Event import EventTypes
 from open_spiel.python.games.tiandijie.primitives.event.EventListener import EventListener
-from open_spiel.python.games.tiandijie.primitives.ModifierAttributes import ModifierAttributes as ma
+from open_spiel.python.games.tiandijie.calculation.ModifierAttributes import ModifierAttributes as ma
 
 
 class BuffTemps(Enum):
@@ -30,7 +30,7 @@ class BuffTemps(Enum):
         EventListener(EventTypes.damage_end, 2, partial(Effects.add_buffs, buff_temp=[chihuan_1], duration=2))])
 
     # 禁闭
-    jinbi = BuffTemp('jinbi', BuffTypes.Harm, False, False, False, {ma.is_action_disabled: True, ma.is_no_counterattack: True}, False, 1, [EventListener(EventTypes.damage_end, 1, partial(Effects.add_partner_harm_buffs, buff_number=2, range=2, duration=2))])
+    jinbi = BuffTemp('jinbi', BuffTypes.Harm, False, False, False, {ma.is_action_disabled: True, ma.is_counterattack_disabled: True}, False, 1, [EventListener(EventTypes.damage_end, 1, partial(Effects.add_partner_harm_buffs, buff_number=2, range=2, duration=2))])
 
     # 三昧真火	有害	可驱散	不可扩散	不可偷取	法防-15%，行动结束时，遭受1次法术伤害（施加者法攻的50%）
     sanmei_zhenhuo = BuffTemp('sanmei_zhenhuo', BuffTypes.Harm, True, False, False, {ma.magic_defense_percentage: -15}, False, 1, [EventListener(EventTypes.action_end, 1, partial(Effects.take_magic_damage, multiplier=0.5))])

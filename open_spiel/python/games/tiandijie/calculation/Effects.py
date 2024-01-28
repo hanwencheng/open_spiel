@@ -9,7 +9,7 @@ from open_spiel.python.games.tiandijie.primitives.buff.Buff import Buff, CasterI
 from open_spiel.python.games.tiandijie.primitives.buff import BuffTemp
 from open_spiel.python.games.tiandijie.primitives.buff.BuffTemp import BuffTypes
 from open_spiel.python.games.tiandijie.primitives.hero import Hero
-from open_spiel.python.games.tiandijie.primitives.Range import Range
+from open_spiel.python.games.tiandijie.calculation.Range import Range
 
 
 def get_current_action(context: Context) -> Action:
