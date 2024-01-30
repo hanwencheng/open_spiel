@@ -2,7 +2,7 @@ import enum
 from typing import Callable, Any
 from typing import List
 
-from open_spiel.python.games.tiandijie.calculation.Range import Range
+from open_spiel.python.games.tiandijie.calculation.Range import Range, skill_range_profession_dict
 from open_spiel.python.games.tiandijie.calculation.RangeType import RangeType
 from open_spiel.python.games.tiandijie.primitives.Context import Context
 from open_spiel.python.games.tiandijie.primitives.hero.HeroBasics import Professions
@@ -16,14 +16,14 @@ class SkillTargetTypes(enum.Enum):
     SELF = 4
     TERRAIN = 5
 
-
-class Skill:
+class SkillTemp:
     def __init__(self, damage_multiplier: float, skill_range: Range,
                  before_buff_modifiers: List[Callable[[List[Context]], Any]],
                  after_buff_modifiers: List[Callable[[List[Context]], Any]],
                  before_fixed_damage_modifier: List[Callable[..., Any]],
                  after_fixed_damage_modifier: List[Callable[..., Any]],
-                 profession: Professions = None
+                 profession: Professions = None,
+                 is_magic: bool = False
                  ):
         self.damage_multiplier = damage_multiplier
         self.before_action_buff_modifier = before_buff_modifiers
@@ -32,32 +32,40 @@ class Skill:
         self.after_action_fixed_damage_modifier = after_fixed_damage_modifier
         self.range = skill_range
         self.target_type = SkillTargetTypes.SELF
+        self.is_magic = is_magic
 
 
-skill_range_profession_dict = {
-    Professions.WARRIOR: Range(RangeType.DIAMOND, 1),
-    Professions.SWORDSMAN: Range(RangeType.DIAMOND, 1),
-    Professions.ARCHER: Range(RangeType.ARCHER, 2),
-    Professions.SORCERER: Range(RangeType.DIAMOND, 2),
-    Professions.PRIEST: Range(RangeType.DIAMOND, 2),
-    Professions.GUARD: Range(RangeType.DIAMOND, 1),
+is_magic_profession_dict = {
+    Professions.WARRIOR: True,
+    Professions.SWORDSMAN: False,
+    Professions.ARCHER: False,
+    Professions.SORCERER: True,
+    Professions.PRIEST: True,
+    Professions.GUARD: False,
 }
 
 
-class NormalAttack(Skill):
+class NormalAttackTemp(SkillTemp):
     def __init__(self, damage_multiplier: float, skill_range: Range,
                  before_buff_modifiers: List[Callable[[List[Context]], Any]],
                  after_buff_modifiers: List[Callable[[List[Context]], Any]],
                  before_fixed_damage_modifier: List[Callable[..., Any]],
                  after_fixed_damage_modifier: List[Callable[..., Any]],
-                 profession: Professions
+                 profession: Professions,
+                 is_magic: bool
                  ):
-        super().__init__(damage_multiplier, skill_range, before_buff_modifiers, after_buff_modifiers,
-                         before_fixed_damage_modifier, after_fixed_damage_modifier)
+        super().__init__(1.0, skill_range, [], [],
+                         [], [], profession, is_magic)
         self.target_type = SkillTargetTypes.ENEMY_SINGLE
         self.damage_multiplier = 1.0
         self.skill_range = skill_range_profession_dict[profession]
 
 
-def is_normal_attack(skill: Skill) -> bool:
-    return isinstance(skill, NormalAttack)
+def is_normal_attack(skill: SkillTemp) -> bool:
+    return isinstance(skill, NormalAttackTemp)
+
+
+def create_normal_attack_skill(profession: Professions, is_magic) -> NormalAttackTemp:
+    if is_magic is None:
+        is_magic = is_magic_profession_dict[profession]
+    return NormalAttackTemp(1.0, skill_range_profession_dict[profession], [], [], [], [], profession, is_magic)

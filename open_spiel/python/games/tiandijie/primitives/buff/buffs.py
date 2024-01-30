@@ -27,7 +27,7 @@ class BuffTemps(Enum):
     # 幽霜	其他	不可驱散	不可扩散	不可偷取	免伤+20%，主动造成伤害后，对目标造成1次「固定伤害」（（物攻+物防）的30%），并施加「迟缓I」状态，持续2回合
     youshuang = BuffTemp('youshuang', BuffTypes.Others, False, False, False, {ma.magic_damage_reduction_percentage: 20, ma.damage_reduction_percentage: 20}, False, 1, [
         EventListener(EventTypes.damage_end, 1, partial(Effects.add_fixed_damage_with_attack_and_defense, multiplier=0.3, is_magic=False)),
-        EventListener(EventTypes.damage_end, 2, partial(Effects.add_buffs, buff_temp=[chihuan_1], duration=2))])
+        EventListener(EventTypes.damage_end, 2, partial(Effects.add_targets_buffs, buff_temp=[chihuan_1], duration=2))])
 
     # 禁闭
     jinbi = BuffTemp('jinbi', BuffTypes.Harm, False, False, False, {ma.is_action_disabled: True, ma.is_counterattack_disabled: True}, False, 1, [EventListener(EventTypes.damage_end, 1, partial(Effects.add_partner_harm_buffs, buff_number=2, range=2, duration=2))])

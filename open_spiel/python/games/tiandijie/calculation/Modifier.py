@@ -3,6 +3,7 @@ from functools import reduce
 from typing import List
 
 from open_spiel.python.games.tiandijie.calculation.Effects import get_current_action
+from open_spiel.python.games.tiandijie.primitives.Action import Action
 from open_spiel.python.games.tiandijie.primitives.Context import Context
 from open_spiel.python.games.tiandijie.calculation.ModifierAttributes import ModifierAttributes
 from open_spiel.python.games.tiandijie.primitives.formation.Formation import Formation
@@ -80,10 +81,10 @@ def merge_modifier(total: Modifier, hero: Hero, attr_name: string) -> Modifier:
     return total
 
 
-def accumulate_talents_modifier(context: Context, attr_name: string) -> float:
-    current_player_id = context.get_current_player_id()
-    partner_heroes = context.get_heroes_by_player_id(current_player_id)
-    counter_heroes = context.get_heroes_by_counter_player_id(current_player_id)
+def accumulate_talents_modifier(attr_name: string, is_attacker: bool, context: Context) -> float:
+    player_id = context.get_actor_by_side(is_attacker).player_id
+    partner_heroes = context.get_heroes_by_player_id(player_id)
+    counter_heroes = context.get_heroes_by_counter_player_id(player_id)
 
     partner_talents = reduce(lambda total, hero: total + getattr(hero.talents, attr_name), partner_heroes, float(0))
     counter_talents = reduce(lambda total, hero: total + getattr(total, hero.talents, attr_name), counter_heroes,
@@ -91,24 +92,26 @@ def accumulate_talents_modifier(context: Context, attr_name: string) -> float:
     return partner_talents + counter_talents
 
 
-def get_formation_modifier(context, attr_name: string) -> float:
-    current_player_id = context.get_current_player_id()
-    current_formation: Formation = context.get_formation_by_player_id(current_player_id)
+def get_formation_modifier(attr_name: string, is_attacker: bool, context: Context) -> float:
+    hero_instance = context.get_actor_by_side(is_attacker)
+    player_id = hero_instance.player_id
+    current_formation: Formation = context.get_formation_by_player_id(player_id)
     basic_modifier_value = 0
     if current_formation.is_active:
         basic_modifier_value = getattr(current_formation.temp.basic_modifier, attr_name)
         formation_effects: List[FormationEffect] = current_formation.temp.effects
         for effect in formation_effects:
-            multiplier = effect.requirement(context)
+            multiplier = effect.requirement(is_attacker, context)
             if multiplier > 0:
                 basic_modifier_value += getattr(effect.modifier, attr_name) * multiplier
     return basic_modifier_value
 
 
-def get_battle_damage_modifier(context: Context) -> float:
-    is_in_battle = get_current_action(context).in_battle
+def get_battle_damage_modifier(is_attacker: bool, context: Context) -> float:
+    action = context.get_action_by_side(is_attacker)
+    is_in_battle = action.is_in_battle
     if is_in_battle:
-        return get_formation_modifier(context, ModifierAttributes.battle_damage_percentage)
+        return get_formation_modifier(ModifierAttributes.battle_damage_percentage, is_attacker, context)
     else:
         return 0
 
@@ -120,20 +123,20 @@ def get_level1_modified_result(hero_instance: Hero, value_attr_name: str, basic:
     return basic * (1 + accumulated_stones_percentage_modifier) + accumulated_stones_value_modifier
 
 
-def get_level2_modifier(hero_instance: Hero, context: Context, attr_name: str) -> float:
+def get_level2_modifier(hero_instance: Hero, is_attacker: bool, attr_name: str, context: Context) -> float:
     accumulated_buffs_modifier = accumulate_attribute(hero_instance.buffs, attr_name)
     accumulated_stones_effect_modifier = accumulate_attribute(hero_instance.stones.effect, attr_name)
-    accumulated_talents_modifier = accumulate_talents_modifier(context, attr_name)
+    accumulated_talents_modifier = accumulate_talents_modifier(attr_name, is_attacker, context)
     accumulated_equipments_modifier = accumulate_attribute(hero_instance.equipments, attr_name)
-    formation_modifier = get_formation_modifier(context, attr_name)
+    formation_modifier = get_formation_modifier(attr_name, is_attacker, context)
     accumulated_passives_modifier = accumulate_attribute(hero_instance.enabled_passives, attr_name)
 
     return accumulated_talents_modifier + accumulated_buffs_modifier + accumulated_stones_effect_modifier + accumulated_equipments_modifier + formation_modifier + accumulated_passives_modifier
 
 
-def get_modifier(hero_instance: Hero, context: Context, attr_name: str) -> float:
+def get_modifier(hero_instance: Hero, is_attacker: bool, context: Context, attr_name: str) -> float:
     accumulated_buffs_modifier = accumulate_attribute(hero_instance.buffs, attr_name)
-    accumulated_talents_modifier = accumulate_talents_modifier(context, attr_name)
+    accumulated_talents_modifier = accumulate_talents_modifier(attr_name, is_attacker, context)
     accumulated_equipments_modifier = accumulate_attribute(hero_instance.equipments, attr_name)
     accumulated_passives_modifier = accumulate_attribute(hero_instance.enabled_passives, attr_name)
 

@@ -6,6 +6,7 @@ from typing import List
 from open_spiel.python.games.tiandijie.calculation.RangeType import RangeType
 from open_spiel.python.games.tiandijie.primitives import Context
 from open_spiel.python.games.tiandijie.basics import Position
+from open_spiel.python.games.tiandijie.primitives.hero.HeroBasics import Professions
 
 
 # return the area in the right bottom direction based on the actor point
@@ -101,6 +102,16 @@ class Range:
     def check_if_target_in_range(self, target_position: Position, context: Context) -> bool:
         area_map = self.get_area(context)
         return target_position in area_map
+
+
+skill_range_profession_dict = {
+    Professions.WARRIOR: Range(RangeType.DIAMOND, 1),
+    Professions.SWORDSMAN: Range(RangeType.DIAMOND, 1),
+    Professions.ARCHER: Range(RangeType.ARCHER, 2),
+    Professions.SORCERER: Range(RangeType.DIAMOND, 2),
+    Professions.PRIEST: Range(RangeType.DIAMOND, 2),
+    Professions.GUARD: Range(RangeType.DIAMOND, 1),
+}
 
 
 def create_directional_range(length: int, width: int) -> Range:

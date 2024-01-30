@@ -22,6 +22,8 @@ class ModifierAttributes:
     magic_defense_percentage = 'magic_defense_percentage'
     damage_percentage = 'damage_percentage'
     damage_reduction_percentage = 'damage_reduction_percentage'
+    active_damage_percentage = 'active_damage_percentage'
+    counterattack_damage_percentage = 'counterattack_damage_percentage'
     magic_damage_percentage = 'magic_damage_percentage'
     magic_damage_reduction_percentage = 'magic_damage_reduction_percentage'
     heal_percentage = 'heal_percentage'
@@ -35,8 +37,8 @@ class ModifierAttributes:
     absolute_defense_range = 'absolute_defense_range'
     counterattack_first_limit = 'counterattack_first_limit'
 
-    element_advantage_multiplier = 'element_advantage_multiplier'
-    element_disadvantage_multiplier = 'element_disadvantage_multiplier'
+    element_attacker_multiplier = 'element_attacker_multiplier'
+    element_defender_multiplier = 'element_defender_multiplier'
 
     is_passives_disabled = 'passives_disabled'
     is_action_disabled = 'action_disabled'

@@ -86,14 +86,13 @@ class EventListenerContainer:
         self.casterInfo = caster_info
 
 
-def event_listener_calculator(event_type: string, context: Context):
+def event_listener_calculator(hero_instance: Hero, is_attacker: bool, event_type: string, context: Context):
     event_listener_containers: List[EventListenerContainer] = []
     current_action: Action = context.get_last_action()
     if current_action is None:
         return
-    actor: Hero = current_action.actor
     # Calculated Buffs
-    for buff in actor.buffs:
+    for buff in hero_instance.buffs:
         buff_event_listeners: List[EventListener] = buff.temp.on_event
         for event_listener in buff_event_listeners:
             if event_listener.event_type == event_type:

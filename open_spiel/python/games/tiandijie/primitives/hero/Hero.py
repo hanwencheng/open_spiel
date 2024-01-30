@@ -6,7 +6,7 @@ from open_spiel.python.games.tiandijie.primitives.Stone import Stone
 from open_spiel.python.games.tiandijie.primitives.hero.Attributes import Attributes, generate_max_level_attributes
 from open_spiel.python.games.tiandijie.primitives.hero import HeroTemp
 from open_spiel.python.games.tiandijie.primitives.buff import Buff
-from open_spiel.python.games.tiandijie.primitives.skill.Skill import Skill
+from open_spiel.python.games.tiandijie.primitives.skill.Skill import SkillTemp
 
 
 class Hero:
@@ -15,8 +15,8 @@ class Hero:
         self.player_id = player_id
         self.temp: HeroTemp = hero_temp
         self.equipments: List[Equipment] = []
-        self.enabled_passives: List[Skill] = []
-        self.enabled_skills: List[Skill] = []
+        self.enabled_passives: List[SkillTemp] = []
+        self.enabled_skills: List[SkillTemp] = []
         self.position = (0, 0)
         self.stones = Stone()
         self.buffs: List[Buff] = []

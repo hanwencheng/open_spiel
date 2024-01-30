@@ -47,3 +47,17 @@ class Context:
 
     def remove_hero(self, hero: Hero):
         self.heroes.remove(hero)
+
+    def get_action_by_side(self, is_attacker: bool):
+        current_action = self.get_last_action()
+        if is_attacker:
+            return current_action
+        else:
+            return current_action.counterattack
+
+    def get_actor_by_side(self, is_attacker: bool):
+        current_action = self.get_last_action()
+        if is_attacker:
+            return current_action.actor
+        else:
+            return current_action.counterattack.actor

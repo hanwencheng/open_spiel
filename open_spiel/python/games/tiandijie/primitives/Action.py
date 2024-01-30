@@ -3,7 +3,7 @@ from typing import List
 from open_spiel.python.games.tiandijie.basics import Position
 
 from open_spiel.python.games.tiandijie.primitives.hero import Hero
-from open_spiel.python.games.tiandijie.primitives.skill import Skill
+from open_spiel.python.games.tiandijie.primitives.skill import SkillTemp
 
 
 class ActionTypes(enum.Enum):
@@ -13,15 +13,16 @@ class ActionTypes(enum.Enum):
     SELF = 3
     PASS = 4
     NORMAL_ATTACK = 5
+    COUNTERATTACK = 6
 
 
 class Action:
-    def __init__(self, cast_hero: Hero, affected_heroes, is_magic: bool, skill: Skill, movable, actionable):
+    def __init__(self, cast_hero: Hero, affected_heroes, skill: SkillTemp, movable, actionable):
         self.targets: List[Hero] = affected_heroes
         self.total_damage: float = 0
-        self.is_magic: bool = is_magic
+        self.is_magic: bool = skill.is_magic
         self.is_in_battle: bool = False
-        self.skill: Skill = None
+        self.skill: SkillTemp = skill
         self.type: ActionTypes = ActionTypes.PASS
         self.move_range: int = 0
         self.moves: List[Position] = []
@@ -40,3 +41,4 @@ class Action:
 
     def update_is_in_battle(self, is_in_battle: bool):
         self.is_in_battle = is_in_battle
+

@@ -1,19 +1,22 @@
 from typing import List
 
+from open_spiel.python.games.tiandijie.calculation.Range import skill_range_profession_dict
 from open_spiel.python.games.tiandijie.primitives.hero.Element import Elements
 from open_spiel.python.games.tiandijie.primitives.hero.HeroBasics import Gender, Professions
 from open_spiel.python.games.tiandijie.primitives import Passive
 from open_spiel.python.games.tiandijie.primitives.hero.Attributes import Attributes, generate_max_level_attributes
 from open_spiel.python.games.tiandijie.primitives.hero.BasicAttributes import AttributesTuple
+from open_spiel.python.games.tiandijie.primitives.skill.SkillTemp import NormalAttackTemp, create_normal_attack_skill
 
 
 class HeroTemp:
-    def __init__(self, basicInfo, level0_attributes, growth_coefficients, skills):
+    def __init__(self, basicInfo, profession, level0_attributes, growth_coefficients, skills):
         self.current_life: float = 1
         self.name = "玄羽"
         self.pinyin = "XUANYU"
         self.rarity = "绝"
 
+        self.normal_attack = create_normal_attack_skill(profession, None)
         self.flyable = False
         self.has_formation = False
         self.formation = None
@@ -22,8 +25,8 @@ class HeroTemp:
         if self.gender not in Gender:
             raise ValueError("性别必须是‘男’或‘女’")
         self.element: Elements = Elements.DARK
-        self.profession: Professions = Professions.ARCHER
-        self.range: int = 2
+        self.profession: Professions = profession
+        self.range: skill_range_profession_dict[profession]
         self.movement: int = 3
         self.level0_attributes: Attributes = Attributes(172, 89, 31, 22, 23, 60)
         self.growth_coefficients: AttributesTuple = growth_coefficients
